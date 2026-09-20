@@ -1,0 +1,1153 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------------------
+// Core Platform Models
+// ----------------------------------------------------------------
+
+model User {
+  id               String             @id @default(cuid())
+  email            String             @unique
+  passwordHash     String
+  name             String?
+  image            String?
+  emailVerified    DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  accounts         Account[]
+  sessions         Session[]
+  organizationMembers OrganizationMember[]
+  auditLogs        AuditLog[]         @relation("Actor")
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  expiresAt          Int?
+  tokenType          String?
+  scope              String?
+  idToken            String?
+  sessionState       String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Organization {
+  id                       String                 @id @default(cuid())
+  name                     String
+  slug                     String                 @unique
+  status                   OrganizationStatus     @default(TRIAL)
+  logoUrl                  String?
+  billingEmail             String?
+  contactEmail             String?
+  phoneNumber              String?
+  address                  String?
+  city                     String?
+  state                    String?
+  zipCode                  String?
+  country                  String?
+  taxId                    String?
+  currency                 String                 @db.VarChar(3) @default("USD")
+  locale                   String                 @db.VarChar(10) @default("en-US")
+  timezone                 String                 @db.VarChar(50) @default("UTC")
+  invoicePrefix            String                 @db.VarChar(20) @default("INV-")
+  nextInvoiceNumber        Int                    @default(1)
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @updatedAt
+
+  members                  OrganizationMember[]
+  properties               Property[]
+  customers                Customer[]
+  leases                   Lease[]
+  services                 Service[]
+  tariffs                  Tariff[]
+  meters                   Meter[]
+  invoices                 Invoice[]
+  payments                 Payment[]
+  creditNotes              CreditNote[]
+  subscriptions            OrganizationSubscription[]
+  notifications            Notification[]
+  documents                Document[]
+  auditLogs                AuditLog[]             @relation("Organization")
+  webhookEndpoints         WebhookEndpoint[]
+  apiKeys                  ApiKey[]
+  integrations             Integration[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum OrganizationStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  SUSPENDED
+  CANCELLED
+  ARCHIVED
+}
+
+model OrganizationMember {
+  id             String           @id @default(cuid())
+  organizationId String
+  userId         String
+  roleId         String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           Role             @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+  @@index([roleId])
+}
+
+model Role {
+  id           String             @id @default(cuid())
+  name         String             @unique
+  description  String?
+  isPlatformRole Boolean            @default(false)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  members      OrganizationMember[]
+  permissions  RolePermission[]
+}
+
+model Permission {
+  id           String             @id @default(cuid())
+  name         String             @unique
+  description  String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  roles        RolePermission[]
+}
+
+model RolePermission {
+  id           String           @id @default(cuid())
+  roleId       String
+  permissionId String
+  createdAt    DateTime         @default(now())
+
+  role         Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission       @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+}
+
+// ----------------------------------------------------------------
+// Subscriptions & Plans
+// ----------------------------------------------------------------
+
+model SubscriptionPlan {
+  id                 String                   @id @default(cuid())
+  name               String                   @unique
+  description        String?
+  price              Decimal                  @db.Decimal(19, 4)
+  currency           String                   @db.VarChar(3)
+  interval           SubscriptionInterval
+  features           Json?
+  stripeProductId    String?
+  stripePriceId      String?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+
+  organizations      OrganizationSubscription[]
+}
+
+enum SubscriptionInterval {
+  MONTHLY
+  ANNUALLY
+}
+
+model OrganizationSubscription {
+  id                 String             @id @default(cuid())
+  organizationId     String             @unique
+  planId             String
+  status             SubscriptionStatus @default(ACTIVE)
+  stripeSubscriptionId String?
+  stripeCustomerId   String?
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  canceledAt         DateTime?
+  endsAt             DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  organization       Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  plan               SubscriptionPlan   @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId])
+  @@index([planId])
+  @@index([status])
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRAILING
+  CANCELED
+  PAST_DUE
+  UNPAID
+}
+
+// ----------------------------------------------------------------
+// Property Management Models
+// ----------------------------------------------------------------
+
+model Portfolio {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  properties     Property[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model Property {
+  id             String           @id @default(cuid())
+  organizationId String
+  portfolioId    String?
+  name           String
+  address        String
+  propertyType   PropertyType     @default(RESIDENTIAL)
+  owner          String?
+  manager        String?
+  unitCount      Int              @default(0)
+  occupancyRate  Decimal          @db.Decimal(5, 2) @default(0.00)
+  images         Json?
+  documents      Json?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  portfolio      Portfolio?       @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  buildings      Building[]
+  units          Unit[]
+  customers      Customer[]       @relation("PropertyCustomers")
+  leases         Lease[]
+  meters         Meter[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@index([propertyType])
+}
+
+enum PropertyType {
+  RESIDENTIAL
+  COMMERCIAL
+  OFFICE
+  RETAIL
+  INDUSTRIAL
+  PUBLIC
+  EDUCATIONAL
+  MIXED_USE
+  OTHER
+}
+
+model Building {
+  id             String           @id @default(cuid())
+  organizationId String
+  propertyId     String
+  name           String
+  address        String?
+  floors         Int?
+  yearBuilt      Int?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  property       Property         @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  units          Unit[]
+
+  @@unique([organizationId, propertyId, name])
+  @@index([organizationId, propertyId])
+}
+
+model Unit {
+  id             String           @id @default(cuid())
+  organizationId String
+  propertyId     String
+  buildingId     String?
+  unitNumber     String
+  unitType       UnitType         @default(APARTMENT)
+  bedrooms       Int?
+  bathrooms      Int?
+  squareFootage  Int?
+  occupancyStatus UnitOccupancyStatus @default(VACANT)
+  currentLeaseId String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  property       Property         @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  building       Building?        @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  leases         Lease[]
+  meters         Meter[]
+  currentLease   Lease?           @relation("CurrentUnitLease", fields: [currentLeaseId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, propertyId, unitNumber])
+  @@index([organizationId, propertyId])
+  @@index([occupancyStatus])
+}
+
+enum UnitType {
+  APARTMENT
+  HOUSE
+  CONDO
+  OFFICE_SPACE
+  RETAIL_SPACE
+  WAREHOUSE
+  OTHER
+}
+
+enum UnitOccupancyStatus {
+  OCCUPIED
+  VACANT
+  UNDER_MAINTENANCE
+  RESERVED
+}
+
+// ----------------------------------------------------------------
+// Customer Management Models
+// ----------------------------------------------------------------
+
+model Customer {
+  id               String            @id @default(cuid())
+  organizationId   String
+  propertyId       String?           // For direct property-customer link, if not via lease
+  customerNumber   String            @unique(map: "Customer_organizationId_customerNumber_key_unique")
+  type             CustomerType      @default(INDIVIDUAL)
+  companyName      String?
+  firstName        String?
+  lastName         String?
+  fullName         String?           @unique(map: "Customer_organizationId_fullName_key_unique") // For simplified unique full name check per organization
+  email            String?           @unique(map: "Customer_organizationId_email_key_unique")
+  phoneNumber      String?
+  billingAddress   String?
+  city             String?
+  state            String?
+  zipCode          String?
+  country          String?
+  taxVatNumber     String?
+  internalNotes    String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  property         Property?         @relation("PropertyCustomers", fields: [propertyId], references: [id], onDelete: SetNull)
+  contacts         CustomerContact[]
+  leases           Lease[]           @relation("CustomerLeases")
+  invoices         Invoice[]
+  payments         Payment[]
+
+  @@index([organizationId])
+  @@index([propertyId])
+  @@index([type])
+}
+
+enum CustomerType {
+  INDIVIDUAL
+  COMPANY
+}
+
+model CustomerContact {
+  id             String           @id @default(cuid())
+  customerId     String
+  firstName      String
+  lastName       String
+  email          String           @unique(map: "CustomerContact_customerId_email_key_unique")
+  phoneNumber    String?
+  isPrimary      Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  customer       Customer         @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+}
+
+// ----------------------------------------------------------------
+// Lease Management Models
+// ----------------------------------------------------------------
+
+model Lease {
+  id             String           @id @default(cuid())
+  organizationId String
+  customerId     String
+  unitId         String
+  leaseNumber    String           @unique(map: "Lease_organizationId_leaseNumber_key_unique")
+  startDate      DateTime         @db.Date
+  endDate        DateTime?        @db.Date
+  moveInDate     DateTime         @db.Date
+  moveOutDate    DateTime?        @db.Date
+  billingStartDate DateTime         @db.Date
+  billingEndDate   DateTime?        @db.Date
+  status         LeaseStatus      @default(ACTIVE)
+  depositAmount  Decimal          @db.Decimal(19, 4) @default(0.00)
+  recurringCharge Decimal         @db.Decimal(19, 4) @default(0.00) // Base recurring charge for the lease
+  serviceAgreement Json?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer       Customer         @relation("CustomerLeases", fields: [customerId], references: [id], onDelete: Cascade)
+  unit           Unit             @relation(fields: [unitId], references: [id], onDelete: Restrict)
+  invoices       Invoice[]
+  currentUnitLease Unit?            @relation("CurrentUnitLease")
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([unitId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+enum LeaseStatus {
+  ACTIVE
+  PENDING
+  EXPIRED
+  TERMINATED
+  RENEWED
+  DRAFT
+}
+
+// ----------------------------------------------------------------
+// Service & Tariff Management Models
+// ----------------------------------------------------------------
+
+model Service {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  serviceType    ServiceTypeEnum  @default(RENT)
+  isBillable     Boolean          @default(true)
+  defaultPrice   Decimal          @db.Decimal(19, 4) @default(0.00)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  packageItems   ServicePackageItem[]
+  invoiceItems   InvoiceItem[]
+  tariffs        Tariff[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@index([serviceType])
+}
+
+enum ServiceTypeEnum {
+  RENT
+  ELECTRICITY
+  WATER
+  GAS
+  HEATING
+  COOLING
+  INTERNET
+  WASTE
+  PARKING
+  MAINTENANCE
+  SERVICE_CHARGE
+  CLEANING
+  SECURITY
+  CUSTOM_SERVICE
+}
+
+model ServicePackage {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  items          ServicePackageItem[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model ServicePackageItem {
+  id             String           @id @default(cuid())
+  servicePackageId String
+  serviceId      String
+  quantity       Int              @default(1)
+  unitPrice      Decimal          @db.Decimal(19, 4)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  servicePackage ServicePackage   @relation(fields: [servicePackageId], references: [id], onDelete: Cascade)
+  service        Service          @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  @@unique([servicePackageId, serviceId])
+  @@index([servicePackageId])
+  @@index([serviceId])
+}
+
+model Tariff {
+  id             String           @id @default(cuid())
+  organizationId String
+  serviceId      String
+  name           String
+  description    String?
+  isActive       Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  service        Service          @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  versions       TariffVersion[]
+  meters         Meter[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@index([serviceId])
+  @@index([isActive])
+}
+
+model TariffVersion {
+  id             String           @id @default(cuid())
+  tariffId       String
+  versionNumber  Int
+  effectiveDate  DateTime         @db.Date
+  endDate        DateTime?        @db.Date
+  tariffType     TariffTypeEnum
+  rules          Json?            // Store tariff rules (e.g., flat rate, tiered, block) as JSON
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  tariff         Tariff           @relation(fields: [tariffId], references: [id], onDelete: Cascade)
+  invoiceItems   InvoiceItem[]
+
+  @@unique([tariffId, versionNumber])
+  @@index([tariffId])
+  @@index([effectiveDate])
+}
+
+enum TariffTypeEnum {
+  FLAT_RATE
+  TIERED
+  BLOCK
+  TIME_OF_USE
+  PEAK
+  OFF_PEAK
+  USAGE
+  STANDING_CHARGE
+  SEASONAL
+  CUSTOM_RATE
+  DISCOUNTED
+  PERCENTAGE
+  LATE_FEE
+  MIN_CHARGE
+  MAX_CHARGE
+  TAX
+}
+
+// ----------------------------------------------------------------
+// Meter Management Models
+// ----------------------------------------------------------------
+
+model Meter {
+  id             String           @id @default(cuid())
+  organizationId String
+  propertyId     String
+  unitId         String?
+  tariffId       String?
+  serialNumber   String           @unique(map: "Meter_organizationId_serialNumber_key_unique")
+  meterType      MeterTypeEnum    @default(ELECTRICITY)
+  unitOfMeasurement String        @db.VarChar(10)
+  installationDate DateTime         @db.Date
+  removalDate    DateTime?        @db.Date
+  multiplier     Decimal          @db.Decimal(10, 4) @default(1.0000)
+  openingReading Decimal          @db.Decimal(19, 4) @default(0.0000)
+  latestReading  Decimal          @db.Decimal(19, 4) @default(0.0000)
+  status         MeterStatusEnum  @default(ACTIVE)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  property       Property         @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  unit           Unit?            @relation(fields: [unitId], references: [id], onDelete: SetNull)
+  tariff         Tariff?          @relation(fields: [tariffId], references: [id], onDelete: SetNull)
+  readings       MeterReading[]
+  invoiceItems   InvoiceItem[]
+
+  @@index([organizationId])
+  @@index([propertyId])
+  @@index([unitId])
+  @@index([meterType])
+  @@index([status])
+}
+
+enum MeterTypeEnum {
+  ELECTRICITY
+  WATER
+  GAS
+  HEAT
+  COOLING
+  CUSTOM
+}
+
+enum MeterStatusEnum {
+  ACTIVE
+  INACTIVE
+  BROKEN
+  REMOVED
+}
+
+model MeterReading {
+  id             String           @id @default(cuid())
+  meterId        String
+  reading        Decimal          @db.Decimal(19, 4)
+  readingDate    DateTime         @db.Date
+  readingType    ReadingTypeEnum  @default(MANUAL)
+  isEstimated    Boolean          @default(false)
+  anomalyDetected Boolean         @default(false)
+  notes          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  meter          Meter            @relation(fields: [meterId], references: [id], onDelete: Cascade)
+
+  @@unique([meterId, readingDate])
+  @@index([meterId])
+  @@index([readingDate])
+  @@index([readingType])
+}
+
+enum ReadingTypeEnum {
+  MANUAL
+  IMPORT
+  API
+  SMART_METER
+  ESTIMATED
+  CORRECTED
+}
+
+// ----------------------------------------------------------------
+// Billing Models
+// ----------------------------------------------------------------
+
+model BillingCycle {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  frequency      BillingFrequency @default(MONTHLY)
+  startDate      DateTime         @db.Date
+  endDate        DateTime?        @db.Date
+  dueDateOffsetDays Int           @default(14)
+  isDefault      Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invoices       Invoice[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@index([frequency])
+}
+
+enum BillingFrequency {
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  SEMIANNUAL
+  ANNUAL
+  CUSTOM
+}
+
+model Invoice {
+  id                 String           @id @default(cuid())
+  organizationId     String
+  customerId         String
+  billingCycleId     String?
+  leaseId            String?
+  invoiceNumber      String           @unique(map: "Invoice_organizationId_invoiceNumber_key_unique")
+  status             InvoiceStatus    @default(DRAFT)
+  invoiceDate        DateTime         @db.Date
+  dueDate            DateTime         @db.Date
+  currency           String           @db.VarChar(3)
+  subtotal           Decimal          @db.Decimal(19, 4)
+  discountAmount     Decimal          @db.Decimal(19, 4) @default(0.00)
+  taxAmount          Decimal          @db.Decimal(19, 4) @default(0.00)
+  total              Decimal          @db.Decimal(19, 4)
+  amountPaid         Decimal          @db.Decimal(19, 4) @default(0.00)
+  remainingBalance   Decimal          @db.Decimal(19, 4)
+  notes              String?
+  termsAndConditions String?
+  attachments        Json?
+  paymentInstructions String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  deletedAt          DateTime?
+
+  organization       Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer           Customer         @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  billingCycle       BillingCycle?    @relation(fields: [billingCycleId], references: [id], onDelete: SetNull)
+  lease              Lease?           @relation(fields: [leaseId], references: [id], onDelete: SetNull)
+  items              InvoiceItem[]
+  payments           PaymentAllocation[]
+  creditNotes        CreditNote[]
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([status])
+  @@index([invoiceDate])
+  @@index([dueDate])
+  @@index([deletedAt])
+}
+
+enum InvoiceStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  SENT
+  VIEWED
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  VOID
+  CANCELLED
+  REFUNDED
+}
+
+model InvoiceItem {
+  id             String           @id @default(cuid())
+  invoiceId      String
+  serviceId      String
+  tariffVersionId String?
+  meterId        String?
+  description    String?
+  quantity       Decimal          @db.Decimal(19, 4)
+  unitPrice      Decimal          @db.Decimal(19, 4)
+  amount         Decimal          @db.Decimal(19, 4)
+  taxRate        Decimal          @db.Decimal(5, 4) @default(0.0000)
+  taxAmount      Decimal          @db.Decimal(19, 4) @default(0.00)
+  isProrated     Boolean          @default(false)
+  billingPeriodStart DateTime?    @db.Date
+  billingPeriodEnd DateTime?      @db.Date
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  invoice        Invoice          @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  service        Service          @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  tariffVersion  TariffVersion?   @relation(fields: [tariffVersionId], references: [id], onDelete: SetNull)
+  meter          Meter?           @relation(fields: [meterId], references: [id], onDelete: SetNull)
+
+  @@index([invoiceId])
+  @@index([serviceId])
+  @@index([tariffVersionId])
+  @@index([meterId])
+}
+
+model CreditNote {
+  id                 String           @id @default(cuid())
+  organizationId     String
+  invoiceId          String
+  creditNoteNumber   String           @unique(map: "CreditNote_organizationId_creditNoteNumber_key_unique")
+  creditDate         DateTime         @db.Date
+  amount             Decimal          @db.Decimal(19, 4)
+  reason             String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  organization       Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invoice            Invoice          @relation(fields: [invoiceId], references: [id], onDelete: Restrict)
+  items              CreditNoteItem[]
+
+  @@index([organizationId])
+  @@index([invoiceId])
+}
+
+model CreditNoteItem {
+  id             String           @id @default(cuid())
+  creditNoteId   String
+  invoiceItemId  String?
+  description    String?
+  amount         Decimal          @db.Decimal(19, 4)
+  createdAt      DateTime         @default(now())
+
+  creditNote     CreditNote       @relation(fields: [creditNoteId], references: [id], onDelete: Cascade)
+  invoiceItem    InvoiceItem?     @relation(fields: [invoiceItemId], references: [id], onDelete: SetNull)
+
+  @@index([creditNoteId])
+  @@index([invoiceItemId])
+}
+
+// ----------------------------------------------------------------
+// Payment Models
+// ----------------------------------------------------------------
+
+model Payment {
+  id                 String           @id @default(cuid())
+  organizationId     String
+  customerId         String
+  transactionId      String?          @unique(map: "Payment_transactionId_key_unique") // External transaction ID from payment provider
+  paymentMethod      String?
+  amount             Decimal          @db.Decimal(19, 4)
+  currency           String           @db.VarChar(3)
+  paymentDate        DateTime         @db.Date
+  status             PaymentStatus    @default(PENDING)
+  type               PaymentType      @default(INVOICE_PAYMENT)
+  notes              String?
+  idempotencyKey     String?          @unique(map: "Payment_idempotencyKey_key_unique") // For webhook idempotency
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  deletedAt          DateTime?
+
+  organization       Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer           Customer         @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  allocations        PaymentAllocation[]
+  refunds            Refund[]
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([status])
+  @@index([paymentDate])
+  @@index([deletedAt])
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentType {
+  INVOICE_PAYMENT
+  OVERPAYMENT
+  DEPOSIT
+  OTHER
+}
+
+model PaymentAllocation {
+  id             String           @id @default(cuid())
+  paymentId      String
+  invoiceId      String
+  amount         Decimal          @db.Decimal(19, 4)
+  createdAt      DateTime         @default(now())
+
+  payment        Payment          @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  invoice        Invoice          @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@unique([paymentId, invoiceId])
+  @@index([paymentId])
+  @@index([invoiceId])
+}
+
+model Refund {
+  id             String           @id @default(cuid())
+  paymentId      String
+  refundAmount   Decimal          @db.Decimal(19, 4)
+  reason         String?
+  refundDate     DateTime         @default(now())
+  createdAt      DateTime         @default(now())
+
+  payment        Payment          @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+}
+
+// ----------------------------------------------------------------
+// Document Management Models
+// ----------------------------------------------------------------
+
+model Document {
+  id             String           @id @default(cuid())
+  organizationId String
+  entityType     String           @db.VarChar(50)
+  entityId       String?
+  fileName       String
+  fileType       String           @db.VarChar(50)
+  fileSize       Int              // Size in bytes
+  storagePath    String           @unique // Path in S3 or other object storage
+  uploadedByUserId String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  deletedAt      DateTime?
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  uploadedBy     User             @relation("UploadedDocuments", fields: [uploadedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId])
+  @@index([entityType, entityId])
+  @@index([uploadedByUserId])
+  @@index([deletedAt])
+}
+
+// ----------------------------------------------------------------
+// Notification Models
+// ----------------------------------------------------------------
+
+model Notification {
+  id             String           @id @default(cuid())
+  organizationId String?
+  userId         String
+  type           NotificationType
+  title          String
+  message        String
+  readAt         DateTime?
+  link           String?
+  metadata       Json?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization?    @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  user           User             @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([readAt])
+  @@index([type])
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+    ERROR
+  SUCCESS
+  INVOICE_CREATED
+  INVOICE_DUE_SOON
+  INVOICE_OVERDUE
+  PAYMENT_RECEIVED
+  PAYMENT_FAILED
+  LEASE_EXPIRY
+  METER_READING_ANOMALY
+  METER_READING_MISSING
+  SUPPORT_UPDATE
+  SYSTEM_ALERT
+  FEATURE_UPDATE
+}
+
+model NotificationPreference {
+  id             String                   @id @default(cuid())
+  organizationId String?
+  userId         String
+  channel        NotificationChannel
+  notificationType String // Matches NotificationType enum values as string
+  enabled        Boolean                  @default(true)
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+
+  organization   Organization?            @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  user           User                     @relation("NotificationPreferences", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId, channel, notificationType])
+  @@index([userId])
+  @@index([organizationId])
+  @@index([channel])
+}
+
+enum NotificationChannel {
+  EMAIL
+  IN_APP
+  SMS
+  WEBHOOK
+}
+
+// ----------------------------------------------------------------
+// Audit Logging Models
+// ----------------------------------------------------------------
+
+model AuditLog {
+  id             String           @id @default(cuid())
+  organizationId String?
+  actorId        String?          // User who performed the action
+  action         String           @db.VarChar(100) // e.g., invoice.create, user.login
+  entityType     String           @db.VarChar(100) // e.g., Invoice, User
+  entityId       String?          // ID of the entity affected
+  metadata       Json?            // Additional details about the action (e.g., changes, old/new values)
+  ipAddress      String?          @db.VarChar(45)
+  userAgent      String?          @db.Text
+  createdAt      DateTime         @default(now())
+
+  organization   Organization?    @relation("Organization", fields: [organizationId], references: [id], onDelete: SetNull)
+  actor          User?            @relation("Actor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+}
+
+// ----------------------------------------------------------------
+// Integrations & Webhooks Models
+// ----------------------------------------------------------------
+
+model WebhookEndpoint {
+  id             String           @id @default(cuid())
+  organizationId String
+  url            String
+  secret         String           @db.Text // Encrypted webhook secret
+  isEnabled      Boolean          @default(true)
+  events         Json?            // List of events to subscribe to, e.g., ["invoice.created", "payment.succeeded"]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  eventsHistory  WebhookEvent[]
+
+  @@unique([organizationId, url])
+  @@index([organizationId])
+}
+
+model WebhookEvent {
+  id                 String           @id @default(cuid())
+  webhookEndpointId  String
+  eventType          String           @db.VarChar(100)
+  payload            Json
+  deliveryStatus     WebhookDeliveryStatus @default(PENDING)
+  statusCode         Int?
+  responseBody       String?          @db.Text
+  retries            Int              @default(0)
+  lastAttemptAt      DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  webhookEndpoint    WebhookEndpoint  @relation(fields: [webhookEndpointId], references: [id], onDelete: Cascade)
+
+  @@index([webhookEndpointId])
+  @@index([eventType])
+  @@index([deliveryStatus])
+}
+
+enum WebhookDeliveryStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  RETRYING
+}
+
+model ApiKey {
+  id             String           @id @default(cuid())
+  organizationId String?
+  key            String           @unique // Hashed API key
+  name           String
+  description    String?
+  expiresAt      DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  createdByUserId String
+  deletedAt      DateTime?
+
+  organization   Organization?    @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  createdBy      User             @relation("CreatedApiKeys", fields: [createdByUserId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId])
+  @@index([createdByUserId])
+  @@index([deletedAt])
+}
+
+model Integration {
+  id             String           @id @default(cuid())
+  organizationId String
+  type           IntegrationType  @default(STRIPE)
+  name           String
+  configuration  Json?            // Encrypted configuration for the integration (e.g., API keys, tokens)
+  isEnabled      Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, type])
+  @@index([organizationId])
+  @@index([type])
+}
+
+enum IntegrationType {
+  STRIPE
+  ADYEN
+  PAYPAL
+  RESEND
+  AWS_S3
+  OPENAI
+  ANTHROPIC
+  SLACK
+  SAP
+  SALESFORCE
+  OTHER
+}
+
+// ----------------------------------------------------------------
+// Support Ticket Models
+// ----------------------------------------------------------------
+
+model SupportTicket {
+  id             String           @id @default(cuid())
+  organizationId String
+  customerId     String?
+  userId         String
+  subject        String
+  description    String           @db.Text
+  status         SupportTicketStatus @default(OPEN)
+  priority       SupportTicketPriority @default(MEDIUM)
+  assignedToUserId String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  closedAt       DateTime?
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer       Customer?        @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  reportedBy     User             @relation("ReportedTickets", fields: [userId], references: [id], onDelete: Restrict)
+  assignedTo     User?            @relation("AssignedTickets", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+  @@index([assignedToUserId])
+  @@index([createdAt])
+}
+
+enum SupportTicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  PENDING_CUSTOMER
+}
+
+enum SupportTicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
