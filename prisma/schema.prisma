@@ -23,6 +23,12 @@ model User {
   accounts         Account[]
   sessions         Session[]
   organizationMembers OrganizationMember[]
+  uploadedDocuments Document[]        @relation("UploadedDocuments")
+  notifications    Notification[]     @relation("UserNotifications")
+  notificationPreferences NotificationPreference[] @relation("NotificationPreferences")
+  createdApiKeys   ApiKey[]           @relation("CreatedApiKeys")
+  reportedTickets  SupportTicket[]    @relation("ReportedTickets")
+  assignedTickets  SupportTicket[]    @relation("AssignedTickets")
   auditLogs        AuditLog[]         @relation("Actor")
 }
 
@@ -78,22 +84,29 @@ model Organization {
   updatedAt                DateTime               @updatedAt
 
   members                  OrganizationMember[]
+  portfolios               Portfolio[]
   properties               Property[]
+  buildings                Building[]
+  units                    Unit[]
   customers                Customer[]
   leases                   Lease[]
   services                 Service[]
+  servicePackages          ServicePackage[]
   tariffs                  Tariff[]
   meters                   Meter[]
+  billingCycles            BillingCycle[]
   invoices                 Invoice[]
   payments                 Payment[]
   creditNotes              CreditNote[]
   subscriptions            OrganizationSubscription[]
   notifications            Notification[]
+  notificationPreferences  NotificationPreference[]
   documents                Document[]
   auditLogs                AuditLog[]             @relation("Organization")
   webhookEndpoints         WebhookEndpoint[]
   apiKeys                  ApiKey[]
   integrations             Integration[]
+  supportTickets           SupportTicket[]
 
   @@index([status])
   @@index([createdAt])
@@ -369,6 +382,7 @@ model Customer {
   leases           Lease[]           @relation("CustomerLeases")
   invoices         Invoice[]
   payments         Payment[]
+  supportTickets   SupportTicket[]
 
   @@index([organizationId])
   @@index([propertyId])
@@ -404,6 +418,7 @@ model Lease {
   id             String           @id @default(cuid())
   organizationId String
   customerId     String
+  propertyId     String?
   unitId         String
   leaseNumber    String           @unique(map: "Lease_organizationId_leaseNumber_key_unique")
   startDate      DateTime         @db.Date
@@ -421,6 +436,7 @@ model Lease {
 
   organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   customer       Customer         @relation("CustomerLeases", fields: [customerId], references: [id], onDelete: Cascade)
+  property       Property?        @relation(fields: [propertyId], references: [id], onDelete: SetNull)
   unit           Unit             @relation(fields: [unitId], references: [id], onDelete: Restrict)
   invoices       Invoice[]
   currentUnitLease Unit?            @relation("CurrentUnitLease")
@@ -428,6 +444,7 @@ model Lease {
   @@index([organizationId])
   @@index([customerId])
   @@index([unitId])
+  @@index([propertyId])
   @@index([status])
   @@index([startDate])
   @@index([endDate])
@@ -766,6 +783,7 @@ model InvoiceItem {
   service        Service          @relation(fields: [serviceId], references: [id], onDelete: Restrict)
   tariffVersion  TariffVersion?   @relation(fields: [tariffVersionId], references: [id], onDelete: SetNull)
   meter          Meter?           @relation(fields: [meterId], references: [id], onDelete: SetNull)
+  creditNoteItems CreditNoteItem[]
 
   @@index([invoiceId])
   @@index([serviceId])

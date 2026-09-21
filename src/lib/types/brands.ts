@@ -1,0 +1,30 @@
+declare const __brand: unique symbol;
+
+export type Brand<T, B> = T & { readonly [__brand]: B };
+
+export type OrganizationId = Brand<string, "OrganizationId">;
+export type InvoiceId = Brand<string, "InvoiceId">;
+export type CustomerId = Brand<string, "CustomerId">;
+export type UserId = Brand<string, "UserId">;
+export type PropertyId = Brand<string, "PropertyId">;
+export type UnitId = Brand<string, "UnitId">;
+export type LeaseId = Brand<string, "LeaseId">;
+export type PaymentId = Brand<string, "PaymentId">;
+export type RoleId = Brand<string, "RoleId">;
+export type PermissionId = Brand<string, "PermissionId">;
+export type TenantSlug = Brand<string, "TenantSlug">;
+export type PortfolioId = Brand<string, "PortfolioId">;
+export type BuildingId = Brand<string, "BuildingId">;
+export type ServiceId = Brand<string, "ServiceId">;
+export type TariffId = Brand<string, "TariffId">;
+export type MeterId = Brand<string, "MeterId">;
+export type BillingCycleId = Brand<string, "BillingCycleId">;
+export type CreditNoteId = Brand<string, "CreditNoteId">;
+export type DocumentId = Brand<string, "DocumentId">;
+export type NotificationId = Brand<string, "NotificationId">;
+export type WebhookEndpointId = Brand<string, "WebhookEndpointId">;
+export type ApiKeyId = Brand<string, "ApiKeyId">;
+export type IntegrationId = Brand<string, "IntegrationId">;
+export type SupportTicketId = Brand<string, "SupportTicketId">;
+export type SubscriptionPlanId = Brand<string, "SubscriptionPlanId">;
+export type OrganizationSubscriptionId = Brand<string, "OrganizationSubscriptionId">;
