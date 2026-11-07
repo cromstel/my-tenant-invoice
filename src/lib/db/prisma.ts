@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import env from "@/lib/config/env";
 import logger from "@/lib/logging/logger";
 import { InternalError } from "@/lib/errors";
+import { applyRls } from "@/lib/db/rls-extension";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -89,7 +90,7 @@ if (env.NODE_ENV === "production") {
   prismaInstance = globalThis.prismaGlobal;
 }
 
-const prisma: PrismaClient = prismaInstance;
+const prisma = applyRls(prismaInstance) as unknown as PrismaClient;
 
 let shutdownRegistered = false;
 

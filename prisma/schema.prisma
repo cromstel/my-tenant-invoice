@@ -14,7 +14,7 @@ datasource db {
 model User {
   id               String             @id @default(cuid())
   email            String             @unique
-  passwordHash     String
+  passwordHash     String?
   name             String?
   image            String?
   emailVerified    DateTime?
@@ -33,31 +33,53 @@ model User {
 }
 
 model Account {
-  id                 String    @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refreshToken       String?
-  accessToken        String?
-  expiresAt          Int?
-  tokenType          String?
-  scope              String?
-  idToken            String?
-  sessionState       String?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                    String    @id @default(cuid())
+  userId                String
+  providerId            String    @default("")
+  accountId             String    @default("")
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  type                  String?
+  provider              String?
+  providerAccountId     String?
+  expiresAt             Int?
+  tokenType             String?
+  sessionState          String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, accountId])
 }
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
+  token        String   @unique
   userId       String
-  expires      DateTime
+  expiresAt    DateTime
+  ipAddress    String?
+  userAgent    String?
+  sessionToken String?  @unique
+  expires      DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
 }
 
 model Organization {
@@ -317,7 +339,7 @@ model Unit {
   bathrooms      Int?
   squareFootage  Int?
   occupancyStatus UnitOccupancyStatus @default(VACANT)
-  currentLeaseId String?
+  currentLeaseId String?  @unique
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 

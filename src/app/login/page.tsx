@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
+import { authClient } from '@/lib/auth-client';
 import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +24,7 @@ const loginFormSchema = z.object({
 
 type FormValues = z.infer<typeof loginFormSchema>;
 
-export default function LoginPage(): React.ReactNode {
+function LoginPageInner(): React.ReactNode {
   const searchParams = useSearchParams();
   const router = useRouter();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
@@ -46,10 +46,9 @@ export default function LoginPage(): React.ReactNode {
     setError(null);
 
     try {
-      const result = await signIn("credentials", {
+      const result = await authClient.signIn.email({
         email: data.email,
         password: data.password,
-        redirect: false,
       });
 
       if (result?.error) {
@@ -57,19 +56,21 @@ export default function LoginPage(): React.ReactNode {
         return;
       }
 
-      if (result?.ok) {
-        router.push(callbackUrl);
-      }
+      router.push(callbackUrl);
     } catch {
       setError("An unexpected error occurred. Please try again.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4 min-h-screen">
       <div className="w-full max-w-md mx-auto mt-16">
         <Card>
           <CardHeader className="space-y-1">
+            <div className="mb-4 flex justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
+            </div>
             <CardTitle className="text-2xl font-bold text-center">
               Sign in to myTenant
             </CardTitle>
@@ -141,5 +142,13 @@ export default function LoginPage(): React.ReactNode {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageInner />
+    </Suspense>
   );
 }

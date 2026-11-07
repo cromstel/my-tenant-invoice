@@ -11,7 +11,7 @@ import {
 import logger from "@/lib/logging/logger";
 import { setTenantContext } from "@/lib/db/tenant-context";
 import type { OrganizationId, UserId } from "@/lib/types/brands";
-import { auth } from "@/auth";
+import { getCurrentUser } from "@/lib/auth";
 
 export type NextRouteHandler = (
   request: NextRequest,
@@ -59,15 +59,15 @@ export function withTenantContext<T extends (...args: unknown[]) => Promise<Resp
   fn: T
 ): T {
   return (async (...args: Parameters<T>): Promise<Response> => {
-    const session = await auth();
+    const user = await getCurrentUser();
 
     const organizationId: OrganizationId | null =
-      session?.user?.activeTenantId
-        ? (session.user.activeTenantId as OrganizationId)
+      user?.activeTenantId
+        ? (user.activeTenantId as OrganizationId)
         : null;
 
     const userId: UserId | null =
-      session?.user?.id ? (session.user.id as UserId) : null;
+      user?.id ? (user.id as UserId) : null;
 
     return setTenantContext<Response>(
       {

@@ -41,7 +41,7 @@ export abstract class AppError extends Error {
   }
 }
 
-/* ──────────── 4xx client ──────────── */
+/* ------------ 4xx client ------------ */
 
 export class BadRequestError extends AppError {
   readonly code = "BAD_REQUEST";
@@ -141,11 +141,15 @@ export class RateLimitError extends AppError {
   }
 }
 
-/* ──────────── 5xx server ──────────── */
+/* ------------ 5xx server ------------ */
 
 export class InternalError extends AppError {
   readonly code = "INTERNAL";
   readonly statusCode = 500;
+
+  constructor(message = "Internal server error", opts?: { cause?: unknown; context?: Record<string, unknown> }) {
+    super(message, opts);
+  }
 
   override get publicMessage(): string {
     return "Something went wrong on our end.";

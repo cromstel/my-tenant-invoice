@@ -408,7 +408,7 @@ async function seedSampleOrganization(): Promise<void> {
 
 async function main(): Promise<void> {
   logger.info("==================================================");
-  logger.info("myTenant Invoice — Database Seeding");
+  logger.info("myTenant Invoice - Database Seeding");
   logger.info("==================================================");
 
   await seedRolesAndPermissions();
@@ -423,7 +423,7 @@ async function main(): Promise<void> {
 
 main()
   .catch((err: unknown) => {
-    logger.error({ err: err instanceof Error ? err : new Error(String(err)), "Seeding failed");
+    logger.error({ err: err instanceof Error ? err : new Error(String(err)) }, "Seeding failed");
     process.exit(1);
   })
   .finally(async () => {

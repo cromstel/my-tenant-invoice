@@ -14,9 +14,6 @@ function buildLogger(): Logger {
         log(object: Record<string, unknown>): Record<string, unknown> {
           return redact(object) as Record<string, unknown>;
         },
-        level(label: string): { level: string } {
-          return { level: label };
-        },
       },
       transport: {
         targets: [

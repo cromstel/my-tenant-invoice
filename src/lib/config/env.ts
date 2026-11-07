@@ -34,12 +34,14 @@ const coerceNumberOptional = z
   });
 
 const envSchema = z.object({
-  APP_URL: z.string().url().optional().default("http://localhost:3000"),
+  APP_URL: z.string().url().optional().default("http://localhost:6161"),
   APP_ENV: AppEnvSchema.optional().default("development"),
   NODE_ENV: NodeEnvSchema.optional().default("development"),
 
-  AUTH_SECRET: z.string().min(1, "AUTH_SECRET is required"),
-  AUTH_URL: z.string().url().optional().default("http://localhost:3000/api/auth"),
+  AUTH_SECRET: z.string().optional(),
+  AUTH_URL: z.string().url().optional().default("http://localhost:6161/api/auth"),
+  BETTER_AUTH_SECRET: z.string().min(32).optional(),
+  BETTER_AUTH_URL: z.string().url().optional().default("http://localhost:6161"),
   AUTH_GITHUB_ID: z.string().optional(),
   AUTH_GITHUB_SECRET: z.string().optional(),
   AUTH_GOOGLE_ID: z.string().optional(),
@@ -73,7 +75,7 @@ const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
 
   ENCRYPTION_KEY: z.string().optional(),
-  CORS_ORIGIN: z.string().optional().default("http://localhost:3000"),
+  CORS_ORIGIN: z.string().optional().default("http://localhost:6161"),
   LOG_LEVEL: LogLevelSchema.optional().default("info"),
   SLOW_QUERY_WARN_MS: coerceNumberOptional.pipe(
     z.number().int().positive().optional().default(1000)

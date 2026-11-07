@@ -31,11 +31,9 @@ prisma/*.db-journal
 # Environment & Secrets
 # ============================================================
 .env
+.env.*
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.*.local
+!.env.example
 
 # ============================================================
 # Logs
@@ -75,3 +73,12 @@ Thumbs.db
 .npm
 .eslintcache
 .husky/_
+AGENTS.md
+DATABASE TECHNOLOGY.md
+project-documentation.md
+
+.agents/
+.opencode/
+tests/
+docs/
+scripts/

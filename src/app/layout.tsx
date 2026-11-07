@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s · myTenant Invoice",
   },
   description:
-    "myTenant Invoice — Production-grade SaaS multi-tenant invoicing and property billing management platform by CromStel IT Group.",
+    "myTenant Invoice - Production-grade SaaS multi-tenant invoicing and property billing management platform by CromStel IT Group.",
   keywords: [
     "invoice",
     "billing",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "myTenant Invoice — Tenant Billing Software",
+        alt: "myTenant Invoice - Tenant Billing Software",
       },
     ],
   },
@@ -108,7 +108,7 @@ export default function RootLayout({ children }: RootLayoutProps): React.ReactNo
       )}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-background text-foreground">
+      <body className="min-h-screen bg-background text-foreground" suppressHydrationWarning>
         {children}
       </body>
     </html>
