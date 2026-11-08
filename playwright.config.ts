@@ -6,7 +6,14 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  // On CI the 'github' reporter annotates failures inline and the HTML report
+  // is written without opening a browser (which would block the runner).
+  reporter: process.env.CI
+    ? [
+        ['github'],
+        ['html', { open: 'never' }],
+      ]
+    : [['html', { open: 'always' }]],
   use: {
     baseURL: 'http://localhost:6161',
     trace: 'on-first-retry',
@@ -21,5 +28,6 @@ export default defineConfig({
     command: 'npm run dev',
     url: 'http://localhost:6161',
     reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
   },
 });

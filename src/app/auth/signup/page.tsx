@@ -67,7 +67,9 @@ function SignupForm(): React.ReactNode {
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
 
-            <CardTitle className="text-center text-2xl font-bold">Create your account</CardTitle>
+            <CardTitle asChild>
+              <h1 className="text-center text-2xl font-bold">Create your account</h1>
+            </CardTitle>
             <CardDescription className="text-center">
               Start managing your property billing in minutes
             </CardDescription>

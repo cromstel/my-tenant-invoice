@@ -72,8 +72,10 @@ function AdminLoginForm(): React.ReactNode {
                 className="brightness-0 invert"
               />
             </div>
-            <CardTitle className="text-center text-2xl font-bold tracking-tight">
-              Platform Admin Console
+            <CardTitle asChild>
+              <h1 className="text-center text-2xl font-bold tracking-tight">
+                Platform Admin Console
+              </h1>
             </CardTitle>
             <CardDescription className="text-center text-slate-400">
               Authorized personnel only - all access is audited

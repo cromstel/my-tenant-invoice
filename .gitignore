@@ -12,6 +12,8 @@ node_modules/
 coverage/
 .playwright/
 test-results/
+playwright-report/
+blob-report/
 
 # ============================================================
 # Next.js
@@ -79,6 +81,4 @@ project-documentation.md
 
 .agents/
 .opencode/
-tests/
 docs/
-scripts/

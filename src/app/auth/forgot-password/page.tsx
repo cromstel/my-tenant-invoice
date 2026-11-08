@@ -47,7 +47,9 @@ function ForgotPasswordForm(): React.ReactNode {
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
 
-            <CardTitle className="text-center text-2xl font-bold">Forgot password?</CardTitle>
+            <CardTitle asChild>
+              <h1 className="text-center text-2xl font-bold">Forgot password?</h1>
+            </CardTitle>
             <CardDescription className="text-center">
               Enter your email and we&apos;ll send you a reset link
             </CardDescription>

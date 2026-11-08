@@ -65,7 +65,9 @@ function ResetPasswordForm(): React.ReactNode {
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
 
-            <CardTitle className="text-center text-2xl font-bold">Reset your password</CardTitle>
+            <CardTitle asChild>
+              <h1 className="text-center text-2xl font-bold">Reset your password</h1>
+            </CardTitle>
             <CardDescription className="text-center">
               Choose a new password for your account
             </CardDescription>

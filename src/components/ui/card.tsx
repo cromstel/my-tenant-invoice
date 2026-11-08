@@ -1,3 +1,4 @@
+import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -23,17 +24,27 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardHeader.displayName = 'CardHeader';
 
-const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function CardTitle({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={cn('text-2xl font-semibold leading-none tracking-tight', className)}
-        {...props}
-      />
-    );
-  },
-);
+export interface CardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Render the title as its child element instead of a div, so the title can
+   * carry a semantic heading tag (for example an h1) while keeping the styles.
+   */
+  asChild?: boolean;
+}
+
+const CardTitle = React.forwardRef<HTMLDivElement, CardTitleProps>(function CardTitle(
+  { className, asChild = false, ...props },
+  ref,
+) {
+  const Comp = asChild ? Slot : 'div';
+  return (
+    <Comp
+      ref={ref}
+      className={cn('text-2xl font-semibold leading-none tracking-tight', className)}
+      {...props}
+    />
+  );
+});
 CardTitle.displayName = 'CardTitle';
 
 const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

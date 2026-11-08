@@ -67,7 +67,9 @@ function LoginForm(): React.ReactNode {
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
 
-            <CardTitle className="text-center text-2xl font-bold">Sign in to myTenant</CardTitle>
+            <CardTitle asChild>
+              <h1 className="text-center text-2xl font-bold">Sign in to myTenant</h1>
+            </CardTitle>
             <CardDescription className="text-center">
               Enter your credentials to access your account
             </CardDescription>
