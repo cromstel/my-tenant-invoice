@@ -14,7 +14,7 @@ module.exports = [
       '.env*',
       'coverage/**',
       'public/**/*.{png,jpg,jpeg,gif,webp,svg}',
-      '*.config.{js,ts,mjs}',
+      '*.config.{js,ts,mjs,mts}',
     ],
   },
   js.configs.recommended,

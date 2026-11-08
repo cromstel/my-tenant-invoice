@@ -60,10 +60,10 @@ function ResetPasswordForm(): React.ReactNode {
       <div className="mx-auto mt-16 w-full max-w-md">
         <Card>
           <CardHeader className="space-y-1">
-      <div className="mb-4 flex justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
-      </div>
+            <div className="mb-4 flex justify-center">
+              {}
+              <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
+            </div>
 
             <CardTitle className="text-center text-2xl font-bold">Reset your password</CardTitle>
             <CardDescription className="text-center">

@@ -1,14 +1,16 @@
-import pino, { type Logger, type Level } from "pino";
-import { env, isProd } from "@/lib/config/env";
-import { redact } from "./redact";
+import pino, { type Level, type Logger } from 'pino';
 
-const logLevel: Level = (env.LOG_LEVEL as Level) ?? "info";
+import { env, isProd } from '@/lib/config/env';
+
+import { redact } from './redact';
+
+const logLevel: Level = (env.LOG_LEVEL as Level) ?? 'info';
 
 function buildLogger(): Logger {
   if (isProd) {
     return pino({
       level: logLevel,
-      base: { service: "mytenant-invoice" },
+      base: { service: 'mytenant-invoice' },
       timestamp: pino.stdTimeFunctions.isoTime,
       formatters: {
         log(object: Record<string, unknown>): Record<string, unknown> {
@@ -18,7 +20,7 @@ function buildLogger(): Logger {
       transport: {
         targets: [
           {
-            target: "pino/file",
+            target: 'pino/file',
             options: { destination: 1 },
           },
         ],
@@ -28,15 +30,15 @@ function buildLogger(): Logger {
 
   return pino({
     level: logLevel,
-    base: { service: "mytenant-invoice" },
+    base: { service: 'mytenant-invoice' },
     transport: {
-      target: "pino-pretty",
+      target: 'pino-pretty',
       options: {
         colorize: true,
         singleLine: true,
-        timestampKey: "time",
-        translateTime: "SYS:standard",
-        ignore: "pid,hostname,service",
+        timestampKey: 'time',
+        translateTime: 'SYS:standard',
+        ignore: 'pid,hostname,service',
       },
     },
   });
@@ -52,9 +54,7 @@ export const logger: Logger = buildLogger();
  * const invoiceLogger = createChildLogger({ orgId, invoiceId });
  * invoiceLogger.info("Invoice sent");
  */
-export function createChildLogger(
-  ctx: Record<string, unknown>
-): Logger {
+export function createChildLogger(ctx: Record<string, unknown>): Logger {
   return logger.child(ctx);
 }
 

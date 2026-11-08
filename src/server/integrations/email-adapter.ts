@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer, { type Transporter } from 'nodemailer';
 import { Resend } from 'resend';
 
 import env from '@/lib/config/env';
@@ -15,7 +15,7 @@ export interface EmailOptions {
 
 export class EmailAdapter {
   private resend: Resend | null = null;
-  private transporter: nodemailer.Transporter | null = null;
+  private transporter: Transporter | null = null;
 
   constructor() {
     if (env.RESEND_API_KEY) {

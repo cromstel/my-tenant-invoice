@@ -1,5 +1,5 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 /**
  * Conditionally joins Tailwind CSS class names and resolves conflicts.
@@ -19,9 +19,9 @@ export function cn(...inputs: ClassValue[]): string {
  * @param cents - Integer value in minor currency units (e.g., 1250 for $12.50)
  * @param currency - ISO 4217 currency code (default "USD")
  */
-export function formatCurrency(cents: number, currency: string = "USD"): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
+export function formatCurrency(cents: number, currency: string = 'USD'): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
     currency,
   }).format(cents / 100);
 }
@@ -32,15 +32,12 @@ export function formatCurrency(cents: number, currency: string = "USD"): string 
  * @param date - Date object or ISO date string
  * @param locale - BCP 47 locale tag (default "en-US")
  */
-export function formatDate(
-  date: Date | string,
-  locale: string = "en-US"
-): string {
-  const d = typeof date === "string" ? new Date(date) : date;
+export function formatDate(date: Date | string, locale: string = 'en-US'): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
   return new Intl.DateTimeFormat(locale, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
   }).format(d);
 }
 
@@ -96,11 +93,11 @@ export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
  */
 export function isEmpty(value: unknown): boolean {
   if (value === null || value === undefined) return true;
-  if (typeof value === "string") return value.length === 0;
-  if (typeof value === "number") return Number.isNaN(value);
-  if (typeof value === "boolean") return false;
+  if (typeof value === 'string') return value.length === 0;
+  if (typeof value === 'number') return Number.isNaN(value);
+  if (typeof value === 'boolean') return false;
   if (value instanceof Date) return false;
   if (Array.isArray(value)) return value.length === 0;
-  if (typeof value === "object") return Object.keys(value as Record<string, unknown>).length === 0;
+  if (typeof value === 'object') return Object.keys(value as Record<string, unknown>).length === 0;
   return false;
 }

@@ -1,7 +1,8 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "@/lib/db/prisma";
-import env from "@/lib/config/env";
+import { betterAuth } from 'better-auth';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+
+import env from '@/lib/config/env';
+import prisma from '@/lib/db/prisma';
 
 const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
 
@@ -21,7 +22,7 @@ if (env.AUTH_GOOGLE_ID && env.AUTH_GOOGLE_SECRET) {
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "mysql",
+    provider: 'mysql',
   }),
   emailAndPassword: {
     enabled: true,
@@ -32,8 +33,8 @@ export const auth = betterAuth({
     updateAge: 60 * 60, // 1 hour
   },
   secret: env.BETTER_AUTH_SECRET,
-  baseURL: env.BETTER_AUTH_URL ?? env.AUTH_URL?.replace("/api/auth", "") ?? "http://localhost:6161",
-  trustedOrigins: [env.APP_URL ?? "http://localhost:6161"],
+  baseURL: env.BETTER_AUTH_URL ?? env.AUTH_URL?.replace('/api/auth', '') ?? 'http://localhost:6161',
+  trustedOrigins: [env.APP_URL ?? 'http://localhost:6161'],
 });
 
 export type Session = typeof auth.$Infer.Session;

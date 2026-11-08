@@ -1,29 +1,29 @@
 export const REDACT_KEYS: Set<string> = new Set([
-  "authorization",
-  "cookie",
-  "set-cookie",
-  "password",
-  "password_confirm",
-  "secret",
-  "sk_",
-  "pk_",
-  "api_key",
-  "token",
-  "client_secret",
-  "card_number",
-  "cvc",
-  "ssn",
-  "creditcard",
-  "cvv",
-  "pin",
+  'authorization',
+  'cookie',
+  'set-cookie',
+  'password',
+  'password_confirm',
+  'secret',
+  'sk_',
+  'pk_',
+  'api_key',
+  'token',
+  'client_secret',
+  'card_number',
+  'cvc',
+  'ssn',
+  'creditcard',
+  'cvv',
+  'pin',
 ]);
 
 const MAX_DEPTH = 6;
-const REDACTED = "[REDACTED]";
-const MAX_DEPTH_MARKER = "[redacted: max depth]";
+const REDACTED = '[REDACTED]';
+const MAX_DEPTH_MARKER = '[redacted: max depth]';
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
-  if (typeof value !== "object" || value === null) return false;
+  if (typeof value !== 'object' || value === null) return false;
   const proto = Object.getPrototypeOf(value);
   return proto === Object.prototype || proto === null;
 }
@@ -56,11 +56,7 @@ export function redact(obj: unknown, depth: number = 0): unknown {
   return obj;
 }
 
-function redactInternal(
-  value: unknown,
-  depth: number,
-  visited: WeakSet<object>
-): unknown {
+function redactInternal(value: unknown, depth: number, visited: WeakSet<object>): unknown {
   if (depth > MAX_DEPTH) return MAX_DEPTH_MARKER;
 
   if (Array.isArray(value)) {
@@ -79,7 +75,7 @@ function redactInternal(
 function redactObject(
   obj: Record<string, unknown>,
   depth: number,
-  visited: WeakSet<object>
+  visited: WeakSet<object>,
 ): Record<string, unknown> {
   if (visited.has(obj)) return {} as Record<string, unknown>;
   visited.add(obj);

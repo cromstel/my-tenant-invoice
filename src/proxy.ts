@@ -1,28 +1,44 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from 'next/server';
 
-import { auth } from "@/lib/better-auth";
+import { auth } from '@/lib/better-auth';
 
 const PUBLIC_ROUTES: readonly string[] = [
-  "/auth/login",
-  "/auth/signup",
-  "/auth/forgot-password",
-  "/auth/reset-password",
-  "/auth/error",
-  "/auth/admin/login",
-  "/api/auth/",
-  "/_next/",
-  "/favicon.ico",
-  "/pay/",
+  '/',
+  '/features',
+  '/pricing',
+  '/solutions',
+  '/security',
+  '/blog',
+  '/about',
+  '/contact',
+  '/terms',
+  '/privacy',
+  '/auth/login',
+  '/auth/signup',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/error',
+  '/auth/admin/login',
+  '/api/auth/',
+  '/_next/',
+  '/favicon.ico',
+  '/logo.svg',
+  '/apple-touch-icon.png',
+  '/robots.txt',
+  '/sitemap.xml',
+  '/og.png',
+  '/pay/',
 ] as const;
 
-const PLATFORM_ADMIN_ROUTES: readonly string[] = ["/admin", "/api/platform"] as const;
+const PLATFORM_ADMIN_ROUTES: readonly string[] = ['/admin', '/api/platform'] as const;
 
 function isPublicRoute(pathname: string): boolean {
-  return PUBLIC_ROUTES.some(
-    (route) =>
-      pathname === route ||
-      pathname.startsWith(route.endsWith("/") ? route : `${route}/`) ||
-      (route.startsWith("/api/") && pathname.startsWith(route)),
+  return PUBLIC_ROUTES.some((route) =>
+    route === '/'
+      ? pathname === route
+      : pathname === route ||
+        pathname.startsWith(route.endsWith('/') ? route : `${route}/`) ||
+        (route.startsWith('/api/') && pathname.startsWith(route)),
   );
 }
 
@@ -33,11 +49,11 @@ function isPlatformAdminRoute(pathname: string): boolean {
 }
 
 function isApiPlatformRoute(pathname: string): boolean {
-  return pathname.startsWith("/api/platform");
+  return pathname.startsWith('/api/platform');
 }
 
 function isApiRoute(pathname: string): boolean {
-  return pathname.startsWith("/api/");
+  return pathname.startsWith('/api/');
 }
 
 export default async function proxy(request: NextRequest): Promise<NextResponse> {
@@ -45,8 +61,8 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
 
   if (isPublicRoute(path)) {
     const response = NextResponse.next();
-    if (process.env.NODE_ENV !== "test") {
-      response.headers.set("x-trace-id", crypto.randomUUID());
+    if (process.env.NODE_ENV !== 'test') {
+      response.headers.set('x-trace-id', crypto.randomUUID());
     }
     return response;
   }
@@ -64,7 +80,7 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
       // Check platform admin
       if (u.roles) {
         for (const orgId of Object.keys(u.roles)) {
-          if (u.roles[orgId]?.includes("PLATFORM_ADMIN")) {
+          if (u.roles[orgId]?.includes('PLATFORM_ADMIN')) {
             isPlatformAdminUser = true;
             break;
           }
@@ -78,36 +94,36 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
   if (isPlatformAdminRoute(path)) {
     if (!authenticated) {
       if (isApiPlatformRoute(path)) {
-        return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+        return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
       }
-      const platformLoginUrl = new URL("/auth/admin/login", request.url);
-      platformLoginUrl.searchParams.set("callbackUrl", request.url);
+      const platformLoginUrl = new URL('/auth/admin/login', request.url);
+      platformLoginUrl.searchParams.set('callbackUrl', request.url);
       return NextResponse.redirect(platformLoginUrl);
     }
 
     if (!isPlatformAdminUser) {
       if (isApiPlatformRoute(path)) {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
 
   if (!authenticated) {
     if (isApiRoute(path)) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
-    const loginUrl = new URL("/auth/login", request.url);
-    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname + request.nextUrl.search);
+    const loginUrl = new URL('/auth/login', request.url);
+    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname + request.nextUrl.search);
     return NextResponse.redirect(loginUrl);
   }
 
   const requestHeaders = new Headers(request.headers);
   const traceId = crypto.randomUUID();
-  requestHeaders.set("x-trace-id", traceId);
+  requestHeaders.set('x-trace-id', traceId);
 
   if (activeTenantId) {
-    requestHeaders.set("x-tenant-id", activeTenantId);
+    requestHeaders.set('x-tenant-id', activeTenantId);
   }
 
   const response = NextResponse.next({
@@ -116,7 +132,7 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
     },
   });
 
-  response.headers.set("x-trace-id", traceId);
+  response.headers.set('x-trace-id', traceId);
 
   return response;
 }

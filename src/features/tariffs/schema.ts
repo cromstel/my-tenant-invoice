@@ -30,7 +30,7 @@ export const createTariffVersionSchema = z.object({
     'MAX_CHARGE',
     'TAX',
   ]),
-  rules: z.record(z.unknown()),
+  rules: z.record(z.string(), z.unknown()),
 });
 
 export type CreateTariffInput = z.infer<typeof createTariffSchema>;

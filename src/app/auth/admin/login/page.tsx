@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { authClient } from '@/lib/auth-client';
 import { Suspense, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { authClient } from '@/lib/auth-client';
 
 const adminLoginFormSchema = z.object({
   email: z.string().email('Please enter a valid admin email address'),
@@ -63,8 +63,14 @@ function AdminLoginForm(): React.ReactNode {
         <Card className="border-slate-700 bg-slate-800/60 text-slate-100 shadow-2xl backdrop-blur-sm supports-[backdrop-filter]:bg-slate-800/40">
           <CardHeader className="space-y-1 border-b border-slate-700 pb-6">
             <div className="mb-2 flex items-center justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} className="brightness-0 invert" />
+              {}
+              <img
+                src="/logo.svg"
+                alt="myTenant Invoice"
+                width={200}
+                height={48}
+                className="brightness-0 invert"
+              />
             </div>
             <CardTitle className="text-center text-2xl font-bold tracking-tight">
               Platform Admin Console

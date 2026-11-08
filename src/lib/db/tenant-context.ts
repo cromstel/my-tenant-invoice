@@ -1,9 +1,7 @@
-import { AsyncLocalStorage } from "node:async_hooks";
-import type { OrganizationId, UserId } from "@/lib/types/brands";
-import {
-  MissingTenantContextError,
-  InternalError,
-} from "@/lib/errors";
+import { AsyncLocalStorage } from 'node:async_hooks';
+
+import { InternalError, MissingTenantContextError } from '@/lib/errors';
+import type { OrganizationId, UserId } from '@/lib/types/brands';
 
 export type TenantContextValue = {
   organizationId: OrganizationId | null;
@@ -47,17 +45,14 @@ export function getOptionalOrganizationId(): OrganizationId | null {
 
 export async function setTenantContext<T>(
   ctx: Partial<TenantContextValue>,
-  fn: () => Promise<T> | T
+  fn: () => Promise<T> | T,
 ): Promise<T> {
   const current = getTenantContext();
   const merged: TenantContextValue = {
-    organizationId:
-      ctx.organizationId !== undefined ? ctx.organizationId : current.organizationId,
+    organizationId: ctx.organizationId !== undefined ? ctx.organizationId : current.organizationId,
     userId: ctx.userId !== undefined ? ctx.userId : current.userId,
-    isPlatformCall:
-      ctx.isPlatformCall !== undefined ? ctx.isPlatformCall : current.isPlatformCall,
-    impersonatedBy:
-      ctx.impersonatedBy !== undefined ? ctx.impersonatedBy : current.impersonatedBy,
+    isPlatformCall: ctx.isPlatformCall !== undefined ? ctx.isPlatformCall : current.isPlatformCall,
+    impersonatedBy: ctx.impersonatedBy !== undefined ? ctx.impersonatedBy : current.impersonatedBy,
     traceId: ctx.traceId !== undefined ? ctx.traceId : current.traceId,
   };
   const result = await tenantStorage.run(merged, () => fn());
@@ -68,20 +63,15 @@ export function isPlatformContext(): boolean {
   return getTenantContext().isPlatformCall;
 }
 
-export async function runAsPlatform<T>(
-  fn: () => Promise<T> | T
-): Promise<T> {
+export async function runAsPlatform<T>(fn: () => Promise<T> | T): Promise<T> {
   const ctx = getTenantContext();
   if (ctx.organizationId) {
-    throw new InternalError(
-      "runAsPlatform called within a tenant-scoped context",
-      {
-        context: {
-          organizationId: ctx.organizationId,
-          traceId: ctx.traceId,
-        },
-      }
-    );
+    throw new InternalError('runAsPlatform called within a tenant-scoped context', {
+      context: {
+        organizationId: ctx.organizationId,
+        traceId: ctx.traceId,
+      },
+    });
   }
   return setTenantContext({ isPlatformCall: true }, fn);
 }

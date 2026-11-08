@@ -1,6 +1,15 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-export default function MarketingHomePage() {
+import { getCurrentUser } from '@/lib/auth';
+
+export default async function MarketingHomePage(): Promise<React.ReactNode> {
+  const user = await getCurrentUser();
+
+  if (user) {
+    redirect('/dashboard');
+  }
+
   return (
     <>
       {/* Hero Section */}
@@ -24,7 +33,7 @@ export default function MarketingHomePage() {
             href="/features"
             className="inline-flex items-center justify-center rounded-md border px-8 py-3 text-sm font-medium shadow hover:bg-accent"
           >
-            Learn More
+            Explore Features
           </Link>
         </div>
       </section>

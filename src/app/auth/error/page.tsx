@@ -58,7 +58,7 @@ export default async function AuthErrorPage({
   const error = getError(errorKey);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4 dark:from-slate-900 dark:to-slate-950">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4 dark:from-slate-900 dark:to-slate-950">
       <div className="mx-auto w-full max-w-lg">
         <div className="rounded-2xl border border-destructive/30 bg-card p-10 shadow-lg">
           <div className="mb-6 flex items-center justify-center">
@@ -108,6 +108,6 @@ export default async function AuthErrorPage({
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

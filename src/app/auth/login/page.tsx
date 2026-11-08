@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { authClient } from '@/lib/auth-client';
 import { Suspense, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { authClient } from '@/lib/auth-client';
 
 const loginFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -62,10 +62,10 @@ function LoginForm(): React.ReactNode {
       <div className="mx-auto mt-16 w-full max-w-md">
         <Card>
           <CardHeader className="space-y-1">
-      <div className="mb-4 flex justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
-      </div>
+            <div className="mb-4 flex justify-center">
+              {}
+              <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
+            </div>
 
             <CardTitle className="text-center text-2xl font-bold">Sign in to myTenant</CardTitle>
             <CardDescription className="text-center">

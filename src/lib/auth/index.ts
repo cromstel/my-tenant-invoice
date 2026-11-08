@@ -1,7 +1,8 @@
-import { headers } from "next/headers";
-import { auth } from "@/lib/better-auth";
-import { ROLE_PERMISSIONS, type RoleName } from "@/config/roles";
-import { AuthorizationError } from "@/lib/errors";
+import { headers } from 'next/headers';
+
+import { ROLE_PERMISSIONS, type RoleName } from '@/config/roles';
+import { auth } from '@/lib/better-auth';
+import { AuthorizationError } from '@/lib/errors';
 
 export type CurrentUser = {
   id: string;
@@ -24,7 +25,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     const user = session.user as Record<string, unknown>;
     return {
       id: user.id as string,
-      email: (user.email as string) ?? "",
+      email: (user.email as string) ?? '',
       name: (user.name as string) ?? null,
       image: (user.image as string) ?? null,
       activeTenantId: (user.activeTenantId as string) ?? null,
@@ -42,7 +43,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
  */
 export async function requireSession(): Promise<CurrentUser> {
   const user = await getCurrentUser();
-  if (!user) throw new AuthorizationError("Authentication required");
+  if (!user) throw new AuthorizationError('Authentication required');
   return user;
 }
 
@@ -103,7 +104,7 @@ export async function isPlatformAdmin(): Promise<boolean> {
   const user = await getCurrentUser();
   if (!user) return false;
   for (const orgId of Object.keys(user.roles)) {
-    if (user.roles[orgId]?.includes("PLATFORM_ADMIN")) return true;
+    if (user.roles[orgId]?.includes('PLATFORM_ADMIN')) return true;
   }
   return false;
 }

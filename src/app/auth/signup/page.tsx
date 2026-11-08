@@ -62,10 +62,10 @@ function SignupForm(): React.ReactNode {
       <div className="mx-auto mt-8 w-full max-w-md">
         <Card>
           <CardHeader className="space-y-1">
-      <div className="mb-4 flex justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
-      </div>
+            <div className="mb-4 flex justify-center">
+              {}
+              <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
+            </div>
 
             <CardTitle className="text-center text-2xl font-bold">Create your account</CardTitle>
             <CardDescription className="text-center">

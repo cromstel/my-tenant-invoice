@@ -13,7 +13,7 @@ export const createLeaseSchema = z.object({
   billingEndDate: z.coerce.date().optional(),
   depositAmount: z.number().min(0).optional(),
   recurringCharge: z.number().min(0).optional(),
-  serviceAgreement: z.record(z.unknown()).optional(),
+  serviceAgreement: z.record(z.string(), z.unknown()).optional(),
 });
 
 export const terminateLeaseSchema = z.object({

@@ -1,111 +1,106 @@
-import { Prisma, type PrismaClient } from "@prisma/client";
-import {
-  getOptionalOrganizationId,
-  isPlatformContext,
-} from "@/lib/db/tenant-context";
-import {
-  MissingTenantContextError,
-  TenantMismatchError,
-} from "@/lib/errors";
-import type { OrganizationId } from "@/lib/types/brands";
+import { Prisma, type PrismaClient } from '@prisma/client';
+
+import { getOptionalOrganizationId, isPlatformContext } from '@/lib/db/tenant-context';
+import { MissingTenantContextError, TenantMismatchError } from '@/lib/errors';
+import type { OrganizationId } from '@/lib/types/brands';
 
 export const TENANT_SCOPED_MODELS: string[] = [
-  "Organization",
-  "OrganizationMember",
-  "Portfolio",
-  "Property",
-  "Building",
-  "Unit",
-  "Customer",
-  "CustomerContact",
-  "Lease",
-  "Service",
-  "ServicePackage",
-  "ServicePackageItem",
-  "Tariff",
-  "TariffVersion",
-  "Meter",
-  "MeterReading",
-  "BillingCycle",
-  "Invoice",
-  "InvoiceItem",
-  "CreditNote",
-  "CreditNoteItem",
-  "Payment",
-  "PaymentAllocation",
-  "Refund",
-  "Document",
-  "Notification",
-  "NotificationPreference",
-  "AuditLog",
-  "WebhookEndpoint",
-  "WebhookEvent",
-  "ApiKey",
-  "Integration",
-  "SupportTicket",
-  "OrganizationSubscription",
+  'Organization',
+  'OrganizationMember',
+  'Portfolio',
+  'Property',
+  'Building',
+  'Unit',
+  'Customer',
+  'CustomerContact',
+  'Lease',
+  'Service',
+  'ServicePackage',
+  'ServicePackageItem',
+  'Tariff',
+  'TariffVersion',
+  'Meter',
+  'MeterReading',
+  'BillingCycle',
+  'Invoice',
+  'InvoiceItem',
+  'CreditNote',
+  'CreditNoteItem',
+  'Payment',
+  'PaymentAllocation',
+  'Refund',
+  'Document',
+  'Notification',
+  'NotificationPreference',
+  'AuditLog',
+  'WebhookEndpoint',
+  'WebhookEvent',
+  'ApiKey',
+  'Integration',
+  'SupportTicket',
+  'OrganizationSubscription',
 ];
 
 export const MODELS_WITH_DIRECT_ORG_ID: string[] = [
-  "OrganizationMember",
-  "Portfolio",
-  "Property",
-  "Building",
-  "Unit",
-  "Customer",
-  "Lease",
-  "Service",
-  "ServicePackage",
-  "Tariff",
-  "Meter",
-  "BillingCycle",
-  "Invoice",
-  "CreditNote",
-  "Payment",
-  "Document",
-  "Notification",
-  "NotificationPreference",
-  "AuditLog",
-  "WebhookEndpoint",
-  "ApiKey",
-  "Integration",
-  "SupportTicket",
-  "OrganizationSubscription",
+  'OrganizationMember',
+  'Portfolio',
+  'Property',
+  'Building',
+  'Unit',
+  'Customer',
+  'Lease',
+  'Service',
+  'ServicePackage',
+  'Tariff',
+  'Meter',
+  'BillingCycle',
+  'Invoice',
+  'CreditNote',
+  'Payment',
+  'Document',
+  'Notification',
+  'NotificationPreference',
+  'AuditLog',
+  'WebhookEndpoint',
+  'ApiKey',
+  'Integration',
+  'SupportTicket',
+  'OrganizationSubscription',
 ];
 
 export const PLATFORM_LOOKUP_MODELS: string[] = [
-  "User",
-  "Account",
-  "Session",
-  "Role",
-  "Permission",
-  "RolePermission",
-  "SubscriptionPlan",
+  'User',
+  'Account',
+  'Session',
+  'Role',
+  'Permission',
+  'RolePermission',
+  'SubscriptionPlan',
 ];
 
 const WRITE_OPERATIONS: string[] = [
-  "create",
-  "createMany",
-  "update",
-  "updateMany",
-  "upsert",
-  "delete",
-  "deleteMany",
-  "executeRaw",
-  "queryRaw",
-  "executeRawUnsafe",
-  "queryRawUnsafe",
+  'create',
+  'createMany',
+  'update',
+  'updateMany',
+  'upsert',
+  'delete',
+  'deleteMany',
+  'executeRaw',
+  'queryRaw',
+  'executeRawUnsafe',
+  'queryRawUnsafe',
 ];
 
 const READ_OPERATIONS: string[] = [
-  "findUnique",
-  "findUniqueOrThrow",
-  "findFirst",
-  "findFirstOrThrow",
-  "findMany",
-  "count",
-  "aggregate",
-  "groupBy",
+  'findUnique',
+  'findUniqueOrThrow',
+  'findFirst',
+  'findFirstOrThrow',
+  'findMany',
+  'count',
+  'aggregate',
+  'groupBy',
 ];
 
 function isTenantScopedModel(model: string | undefined): boolean {
@@ -133,19 +128,19 @@ function isReadOperation(operation: string): boolean {
 
 function isRawOperation(operation: string): boolean {
   return (
-    operation === "executeRaw" ||
-    operation === "queryRaw" ||
-    operation === "executeRawUnsafe" ||
-    operation === "queryRawUnsafe"
+    operation === 'executeRaw' ||
+    operation === 'queryRaw' ||
+    operation === 'executeRawUnsafe' ||
+    operation === 'queryRawUnsafe'
   );
 }
 
 function injectOrgIdIntoWhere(
   where: Record<string, unknown> | undefined,
   organizationId: OrganizationId,
-  model: string
+  model: string,
 ): Record<string, unknown> {
-  if (model === "Organization") {
+  if (model === 'Organization') {
     return { ...where, id: organizationId };
   }
   return { ...where, organizationId };
@@ -154,9 +149,9 @@ function injectOrgIdIntoWhere(
 function injectOrgIdIntoData(
   data: Record<string, unknown> | Array<Record<string, unknown>> | undefined,
   organizationId: OrganizationId,
-  model: string
+  model: string,
 ): Record<string, unknown> | Array<Record<string, unknown>> {
-  if (model === "Organization") {
+  if (model === 'Organization') {
     return data ?? {};
   }
   if (Array.isArray(data)) {
@@ -168,14 +163,14 @@ function injectOrgIdIntoData(
 function verifyResultOrganizationId(
   result: unknown,
   organizationId: OrganizationId,
-  model: string
+  model: string,
 ): void {
   if (result === null || result === undefined) return;
   if (Array.isArray(result)) {
     for (const row of result) {
       verifyRowOrganizationId(row, organizationId, model);
     }
-  } else if (typeof result === "object") {
+  } else if (typeof result === 'object') {
     verifyRowOrganizationId(result as Record<string, unknown>, organizationId, model);
   }
 }
@@ -183,7 +178,7 @@ function verifyResultOrganizationId(
 function verifyRowOrganizationId(
   row: Record<string, unknown>,
   organizationId: OrganizationId,
-  model: string
+  model: string,
 ): void {
   if (hasDirectOrgIdField(model)) {
     const rowOrgId = row.organizationId as OrganizationId | undefined;
@@ -197,7 +192,7 @@ function verifyRowOrganizationId(
         },
       });
     }
-  } else if (model === "Organization") {
+  } else if (model === 'Organization') {
     const rowId = row.id as OrganizationId | undefined;
     if (rowId && rowId !== organizationId) {
       throw new TenantMismatchError({
@@ -212,7 +207,7 @@ function verifyRowOrganizationId(
 }
 
 export const rlsExtension = Prisma.defineExtension({
-  name: "row-level-security",
+  name: 'row-level-security',
   query: {
     $allModels: {
       async $allOperations({ model, operation, args, query }) {
@@ -240,47 +235,35 @@ export const rlsExtension = Prisma.defineExtension({
 
           if (tenantScoped) {
             if (isReadOperation(operation)) {
-              const existingWhere = (modifiedArgs.where ??
-                {}) as Record<string, unknown>;
-              modifiedArgs.where = injectOrgIdIntoWhere(
-                existingWhere,
-                orgId,
-                model as string
-              );
+              const existingWhere = (modifiedArgs.where ?? {}) as Record<string, unknown>;
+              modifiedArgs.where = injectOrgIdIntoWhere(existingWhere, orgId, model as string);
             } else if (isWriteOperation(operation)) {
-              if (operation === "create" || operation === "createMany") {
-                if (hasDirectOrgIdField(model) || model === "Organization") {
+              if (operation === 'create' || operation === 'createMany') {
+                if (hasDirectOrgIdField(model) || model === 'Organization') {
                   modifiedArgs.data = injectOrgIdIntoData(
                     modifiedArgs.data as
-                      | Record<string, unknown>
-                      | Array<Record<string, unknown>>
-                      | undefined,
+                      Record<string, unknown> | Array<Record<string, unknown>> | undefined,
                     orgId,
-                    model as string
+                    model as string,
                   );
                 }
               }
 
               if (
-                operation === "update" ||
-                operation === "updateMany" ||
-                operation === "delete" ||
-                operation === "deleteMany" ||
-                operation === "upsert"
+                operation === 'update' ||
+                operation === 'updateMany' ||
+                operation === 'delete' ||
+                operation === 'deleteMany' ||
+                operation === 'upsert'
               ) {
-                if (hasDirectOrgIdField(model) || model === "Organization") {
-                  const existingWhere = (modifiedArgs.where ??
-                    {}) as Record<string, unknown>;
-                  modifiedArgs.where = injectOrgIdIntoWhere(
-                    existingWhere,
-                    orgId,
-                    model as string
-                  );
+                if (hasDirectOrgIdField(model) || model === 'Organization') {
+                  const existingWhere = (modifiedArgs.where ?? {}) as Record<string, unknown>;
+                  modifiedArgs.where = injectOrgIdIntoWhere(existingWhere, orgId, model as string);
                 }
               }
 
-              if (operation === "upsert") {
-                if (hasDirectOrgIdField(model) || model === "Organization") {
+              if (operation === 'upsert') {
+                if (hasDirectOrgIdField(model) || model === 'Organization') {
                   const upsertArgs = modifiedArgs as {
                     create?: Record<string, unknown>;
                     update?: Record<string, unknown>;
@@ -289,18 +272,17 @@ export const rlsExtension = Prisma.defineExtension({
                     upsertArgs.create = injectOrgIdIntoData(
                       upsertArgs.create,
                       orgId,
-                      model as string
+                      model as string,
                     ) as Record<string, unknown>;
                   }
                   if (upsertArgs.update && hasDirectOrgIdField(model)) {
                     const updateData = upsertArgs.update;
                     if (
                       updateData &&
-                      typeof updateData === "object" &&
+                      typeof updateData === 'object' &&
                       !Array.isArray(updateData)
                     ) {
-                      delete (updateData as Record<string, unknown>)
-                        .organizationId;
+                      delete (updateData as Record<string, unknown>).organizationId;
                     }
                   }
                 }
@@ -310,7 +292,7 @@ export const rlsExtension = Prisma.defineExtension({
 
           const result = await (query as (a: unknown) => Promise<unknown>)(modifiedArgs);
 
-          if (tenantScoped && (isReadOperation(operation) || operation === "create")) {
+          if (tenantScoped && (isReadOperation(operation) || operation === 'create')) {
             verifyResultOrganizationId(result, orgId, model as string);
           }
 
@@ -349,8 +331,8 @@ export const rlsExtension = Prisma.defineExtension({
 });
 
 export function applyRls(
-  prismaClient: PrismaClient
-): ReturnType<(typeof prismaClient)["$extends"]> {
+  prismaClient: PrismaClient,
+): ReturnType<(typeof prismaClient)['$extends']> {
   return prismaClient.$extends(rlsExtension);
 }
 
