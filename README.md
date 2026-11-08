@@ -1,3 +1,5 @@
+<img src="public/og.png" alt="myTenant Invoice - smart multi-tenant invoicing and property billing platform" width="1200" />
+
 # myTenant Invoice - Commercial SaaS Platform
 
 **myTenant Invoice** is a production-grade, secure, highly scalable, industry-leading SaaS smart multi-tenant invoicing and property billing management platform developed by **CromStel IT Group**.
