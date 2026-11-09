@@ -82,3 +82,6 @@ project-documentation.md
 .agents/
 .opencode/
 docs/
+
+# Agent working artifacts (session/task plans, not source)
+.tmp/
