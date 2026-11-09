@@ -9,7 +9,8 @@ export class StripeAdapter {
 
   constructor() {
     if (env.STRIPE_SECRET_KEY) {
-      this.stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: '2025-02-24.acacia' });
+      // stripe-node pins one API version per major; v23 pins 2026-10-28.endive.
+      this.stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: '2026-10-28.endive' });
     }
   }
 

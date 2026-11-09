@@ -3,6 +3,8 @@ import IORedis from 'ioredis';
 
 const connection = new IORedis(process.env.REDIS_URL ?? 'redis://localhost:6379', {
   maxRetriesPerRequest: null,
+  // ioredis 6 defaults to RESP3; BullMQ's Lua dispatch is tested against RESP2.
+  protocol: 2,
 });
 
 // Queue definitions
