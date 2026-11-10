@@ -37,7 +37,10 @@ We pledge to make participation a harassment-free experience.
    npm run test:unit
    npm run test:integration
    ```
-6. Submit a pull request against `main` and fill in the PR template.
+6. When a dependency needs a major-version upgrade, follow
+   [Dependency Management](./DEPENDENCY_MANAGEMENT.md). Majors are migrated by
+   hand, one dependency at a time, never by a grouped Dependabot pull request.
+7. Submit a pull request against `main` and fill in the PR template.
 
 ---
 

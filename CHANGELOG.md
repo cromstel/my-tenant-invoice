@@ -13,7 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Product vision, personas, user stories, and feature roadmap (Phase 0).
 
 ### Changed
-- (none)
+- All dependencies migrated to their latest stable major versions — Prisma ORM
+  7, Tailwind CSS 4, ESLint 10, stripe 23, and others. The full audit trail is
+  in [the migration record](./DEPENDENCY_MIGRATION_2026-11.md).
+- Dependabot groups now cover minor and patch updates only. Major updates are
+  ignored and migrated deliberately, following
+  [Dependency Management](./DEPENDENCY_MANAGEMENT.md).
 
 ### Deprecated
 - (none)
