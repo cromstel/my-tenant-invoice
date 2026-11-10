@@ -1,3 +1,4 @@
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import {
   OrganizationStatus,
   PrismaClient,
@@ -9,7 +10,7 @@ import bcrypt from 'bcryptjs';
 import { env } from '@/lib/config/env';
 import logger from '@/lib/logging/logger';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({ adapter: new PrismaMariaDb(env.DATABASE_URL) });
 
 const PLATFORM_ROLES = [
   {

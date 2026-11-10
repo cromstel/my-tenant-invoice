@@ -1,3 +1,4 @@
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@prisma/client';
 
 import env from '@/lib/config/env';
@@ -14,6 +15,7 @@ export function createPrismaClient(): PrismaClient {
   const errorMs = env.SLOW_QUERY_ERROR_MS;
 
   const client = new PrismaClient({
+    adapter: new PrismaMariaDb(env.DATABASE_URL),
     log: [
       { level: 'error', emit: 'event' },
       { level: 'warn', emit: 'event' },
