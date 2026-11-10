@@ -60,7 +60,7 @@ function ResetPasswordForm(): React.ReactNode {
       <div className="mx-auto mt-16 w-full max-w-md">
         <Card>
           <CardHeader className="space-y-1">
-            <div className="mb-4 flex justify-center">
+            <div className="mb-5 flex justify-center">
               {}
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
@@ -87,6 +87,7 @@ function ResetPasswordForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="password">New Password</Label>
                 <Input
+                  className="mt-2"
                   id="password"
                   type="password"
                   autoComplete="new-password"
@@ -102,6 +103,7 @@ function ResetPasswordForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <Input
+                  className="mt-2"
                   id="confirmPassword"
                   type="password"
                   autoComplete="new-password"

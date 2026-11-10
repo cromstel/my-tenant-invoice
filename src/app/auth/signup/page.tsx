@@ -62,7 +62,7 @@ function SignupForm(): React.ReactNode {
       <div className="mx-auto mt-8 w-full max-w-md">
         <Card>
           <CardHeader className="space-y-1">
-            <div className="mb-4 flex justify-center">
+            <div className="mb-5 flex justify-center">
               {}
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
@@ -79,6 +79,7 @@ function SignupForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
                 <Input
+                  className="mt-2"
                   id="name"
                   type="text"
                   autoComplete="name"
@@ -94,6 +95,7 @@ function SignupForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
+                  className="mt-2"
                   id="email"
                   type="email"
                   autoComplete="email"
@@ -109,6 +111,7 @@ function SignupForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="organizationName">Organization Name</Label>
                 <Input
+                  className="mt-2"
                   id="organizationName"
                   type="text"
                   placeholder="Acme Property Management"
@@ -123,6 +126,7 @@ function SignupForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
+                  className="mt-2"
                   id="password"
                   type="password"
                   autoComplete="new-password"
@@ -138,6 +142,7 @@ function SignupForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <Input
+                  className="mt-2"
                   id="confirmPassword"
                   type="password"
                   autoComplete="new-password"

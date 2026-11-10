@@ -62,7 +62,7 @@ function LoginForm(): React.ReactNode {
       <div className="mx-auto mt-16 w-full max-w-md">
         <Card>
           <CardHeader className="space-y-1">
-            <div className="mb-4 flex justify-center">
+            <div className="mb-5 flex justify-center">
               {}
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
@@ -79,6 +79,7 @@ function LoginForm(): React.ReactNode {
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
+                  className="mt-2"
                   id="email"
                   type="email"
                   autoComplete="email"

@@ -62,7 +62,7 @@ function AdminLoginForm(): React.ReactNode {
       <div className="mx-auto mt-16 w-full max-w-md">
         <Card className="border-slate-700 bg-slate-800/60 text-slate-100 shadow-2xl backdrop-blur-sm supports-[backdrop-filter]:bg-slate-800/40">
           <CardHeader className="space-y-1 border-b border-slate-700 pb-6">
-            <div className="mb-2 flex items-center justify-center">
+            <div className="mb-3 flex items-center justify-center">
               {}
               <img
                 src="/logo.svg"
@@ -93,7 +93,7 @@ function AdminLoginForm(): React.ReactNode {
                   autoComplete="email"
                   placeholder="admin@platform.com"
                   disabled={isSubmitting}
-                  className="border-slate-600 bg-slate-900/60 text-slate-100 placeholder:text-slate-500 focus-visible:border-primary focus-visible:ring-primary"
+                  className="mt-2 border-slate-600 bg-slate-900/60 text-slate-100 placeholder:text-slate-500 focus-visible:border-primary focus-visible:ring-primary"
                   {...register('email')}
                 />
                 {errors.email ? (
@@ -111,7 +111,7 @@ function AdminLoginForm(): React.ReactNode {
                   autoComplete="current-password"
                   placeholder="••••••••"
                   disabled={isSubmitting}
-                  className="border-slate-600 bg-slate-900/60 text-slate-100 placeholder:text-slate-500 focus-visible:border-primary focus-visible:ring-primary"
+                  className="mt-2 border-slate-600 bg-slate-900/60 text-slate-100 placeholder:text-slate-500 focus-visible:border-primary focus-visible:ring-primary"
                   {...register('password')}
                 />
                 {errors.password ? (

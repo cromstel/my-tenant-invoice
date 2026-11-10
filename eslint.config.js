@@ -9,6 +9,7 @@ module.exports = [
   {
     ignores: [
       '.next/**',
+      '.tmp/**',
       'node_modules/**',
       'dist/**',
       '.env*',

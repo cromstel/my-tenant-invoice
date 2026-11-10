@@ -7,12 +7,12 @@ import { cn } from '@/lib/utils';
 
 const fontSans = FontSans({
   subsets: ['latin'],
-  variable: '--font-sans',
+  variable: '--font-inter',
 });
 
 const fontMono = FontMono({
   subsets: ['latin'],
-  variable: '--font-mono',
+  variable: '--font-jetbrains-mono',
 });
 
 export const metadata: Metadata = {
