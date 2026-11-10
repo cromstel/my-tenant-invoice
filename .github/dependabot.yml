@@ -11,11 +11,30 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - dependencies
+    # Major updates are ignored on purpose: they are breaking changes that
+    # need a deliberate migration (schema/config changes, lockfile churn,
+    # code edits) rather than an unattended grouped pull request. Without the
+    # `update-types` filter the groups below silently bundled majors into a
+    # single PR, which failed CI because the CLI and the client were bumped
+    # in isolation. Groups are therefore limited to minor and patch updates,
+    # and majors are raised manually, one dependency at a time.
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
     groups:
       production-dependencies:
+        applies-to: version-updates
         dependency-type: production
+        update-types:
+          - minor
+          - patch
       development-dependencies:
+        applies-to: version-updates
         dependency-type: development
+        update-types:
+          - minor
+          - patch
 
   - package-ecosystem: github-actions
     directory: '/'
