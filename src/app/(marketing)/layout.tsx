@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { Wordmark } from '@/components/brand/wordmark';
 import { SiteHeader } from '@/components/layout/site-header';
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
@@ -13,7 +14,9 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         <div className="container mx-auto px-4 py-8">
           <div className="grid gap-8 md:grid-cols-4">
             <div>
-              <h3 className="mb-2 font-semibold">myTenant Invoice</h3>
+              <h3 className="mb-2">
+                <Wordmark markClassName="size-6" nameClassName="text-base font-semibold" />
+              </h3>
               <p className="text-sm text-muted-foreground">
                 Production-grade SaaS multi-tenant invoicing and property billing management
                 platform.

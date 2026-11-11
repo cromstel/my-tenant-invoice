@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import * as React from 'react';
 
+import { Wordmark } from '@/components/brand/wordmark';
 import { MobileNav } from '@/components/layout/mobile-nav';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { navigationLinks } from '@/config/navigation';
@@ -37,11 +38,8 @@ export function SiteHeader(): React.JSX.Element {
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* wordmark */}
-        <Link
-          href="/"
-          className={`inline-flex min-h-11 items-center text-xl font-bold ${focusRing}`}
-        >
-          myTenant Invoice
+        <Link href="/" className={`inline-flex min-h-11 items-center rounded-md ${focusRing}`}>
+          <Wordmark markClassName="size-7 sm:size-8" />
         </Link>
 
         {/* desktop nav */}

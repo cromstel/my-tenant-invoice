@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import Link from 'next/link';
 import * as React from 'react';
 
+import { Wordmark } from '@/components/brand/wordmark';
 import { SheetClose, SheetTitle } from '@/components/ui/sheet';
 import { navigationLinks } from '@/config/navigation';
 
@@ -16,7 +17,7 @@ export function MobileNav({ onNavigate }: MobileNavProps): React.JSX.Element {
     <>
       <div className="flex h-16 shrink-0 items-center justify-between border-b px-4">
         <SheetTitle asChild>
-          <span className="text-xl font-bold">myTenant Invoice</span>
+          <Wordmark markClassName="size-7 sm:size-8" />
         </SheetTitle>
         <SheetClose className="inline-flex size-11 items-center justify-center rounded-md text-foreground opacity-80 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none">
           <X className="size-5" />

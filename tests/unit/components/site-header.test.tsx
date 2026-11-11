@@ -98,6 +98,18 @@ describe('SiteHeader', () => {
     expect(within(dialog).queryByRole('heading')).toBeNull();
   });
 
+  it('shows the logo next to the product name', () => {
+    // Arrange & Act
+    render(<SiteHeader />);
+
+    // Assert
+    const home = screen.getByRole('link', { name: 'myTenant Invoice' });
+    const mark = home.querySelector('svg');
+
+    expect(mark).not.toBeNull();
+    expect(mark).toHaveAttribute('aria-hidden', 'true');
+  });
+
   it('closes the drawer on Escape and restores focus to the trigger', async () => {
     // Arrange
     const user = userEvent.setup();
