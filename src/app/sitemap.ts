@@ -5,6 +5,7 @@ const BASE_URL = 'https://mytenant.cromstelit.com';
 const publicPages = [
   { path: '', priority: 1, changeFrequency: 'monthly' },
   { path: '/features', priority: 0.9, changeFrequency: 'monthly' },
+  { path: '/services', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/pricing', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/solutions', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/security', priority: 0.7, changeFrequency: 'yearly' },

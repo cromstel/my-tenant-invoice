@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" shape-rendering="geometricPrecision">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="pin" x1="658" y1="394" x2="718" y2="496" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <ellipse cx="396" cy="306" rx="352" ry="250" fill="#f1f5f9" fill-opacity="0.6"/>
+
+  <!-- hierarchy connectors -->
+  <path d="M 402 252 C 432 230, 452 206, 478 190" fill="none" stroke="#93c5fd" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+  <path d="M 402 330 C 448 330, 478 300, 512 284" fill="none" stroke="#93c5fd" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+
+  <!-- property block -->
+  <ellipse cx="232" cy="512" rx="196" ry="16" fill="#0f172a" fill-opacity="0.05"/>
+  <rect x="190" y="76" width="90" height="26" rx="13" fill="#143694"/>
+  <rect x="78" y="106" width="330" height="404" rx="22" fill="#0f172a" fill-opacity="0.05"/>
+  <rect x="70" y="96" width="330" height="400" rx="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+
+  <!-- floor 1 -->
+  <rect x="90" y="122" width="88" height="78" rx="12" fill="#3b82f6"/>
+  <rect x="191" y="122" width="88" height="78" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="292" y="122" width="88" height="78" rx="12" fill="#3b82f6"/>
+  <!-- floor 2 -->
+  <rect x="90" y="212" width="88" height="78" rx="12" fill="#3b82f6"/>
+  <rect x="191" y="212" width="88" height="78" rx="12" fill="#3b82f6"/>
+  <rect x="292" y="212" width="88" height="78" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <!-- floor 3 -->
+  <rect x="90" y="302" width="88" height="78" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="191" y="302" width="88" height="78" rx="12" fill="#3b82f6"/>
+  <rect x="292" y="302" width="88" height="78" rx="12" fill="#3b82f6"/>
+  <!-- floor 4 -->
+  <rect x="90" y="392" width="88" height="78" rx="12" fill="#3b82f6"/>
+  <rect x="191" y="392" width="88" height="78" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="292" y="392" width="88" height="78" rx="12" fill="#3b82f6"/>
+
+  <!-- occupied unit markers -->
+  <rect x="118" y="160" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+  <rect x="320" y="160" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+  <rect x="219" y="250" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+  <rect x="320" y="250" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+  <rect x="219" y="340" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+  <rect x="320" y="340" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+  <rect x="118" y="430" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+  <rect x="320" y="430" width="20" height="22" rx="5" fill="#ffffff" fill-opacity="0.85"/>
+
+  <!-- ground plinth -->
+  <rect x="50" y="496" width="370" height="14" rx="7" fill="#cbd5e1" fill-opacity="0.6"/>
+
+  <!-- portfolio cards -->
+  <rect x="438" y="130" width="240" height="150" rx="18" fill="#0f172a" fill-opacity="0.05"/>
+  <rect x="430" y="120" width="240" height="150" rx="18" fill="#f8fafc"/>
+  <circle cx="462" cy="156" r="10" fill="#143694"/>
+  <rect x="482" y="149" width="120" height="12" rx="6" fill="#cbd5e1"/>
+  <rect x="482" y="188" width="126" height="10" rx="5" fill="#cbd5e1" fill-opacity="0.7"/>
+  <rect x="482" y="212" width="88" height="10" rx="5" fill="#cbd5e1" fill-opacity="0.5"/>
+
+  <rect x="478" y="180" width="240" height="150" rx="18" fill="#0f172a" fill-opacity="0.06"/>
+  <rect x="470" y="170" width="240" height="150" rx="18" fill="#ffffff"/>
+  <circle cx="502" cy="206" r="10" fill="#93c5fd"/>
+  <rect x="522" y="199" width="140" height="12" rx="6" fill="#cbd5e1"/>
+  <rect x="498" y="238" width="168" height="10" rx="5" fill="#cbd5e1" fill-opacity="0.7"/>
+  <rect x="498" y="262" width="110" height="10" rx="5" fill="#cbd5e1" fill-opacity="0.5"/>
+
+  <rect x="518" y="230" width="250" height="160" rx="18" fill="#0f172a" fill-opacity="0.07"/>
+  <rect x="510" y="220" width="250" height="160" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <circle cx="542" cy="258" r="10" fill="#3b82f6"/>
+  <rect x="562" y="251" width="150" height="12" rx="6" fill="#cbd5e1"/>
+  <rect x="538" y="290" width="190" height="10" rx="5" fill="#cbd5e1" fill-opacity="0.7"/>
+  <rect x="538" y="314" width="124" height="10" rx="5" fill="#93c5fd"/>
+  <rect x="682" y="288" width="56" height="38" rx="10" fill="#143694"/>
+
+  <!-- location pin -->
+  <ellipse cx="688" cy="504" rx="46" ry="10" fill="#0f172a" fill-opacity="0.05"/>
+  <path d="M 688 394 C 671.4 394, 658 407.4, 658 424 C 658 448, 688 496, 688 496 C 688 496, 718 448, 718 424 C 718 407.4, 704.6 394, 688 394 Z" fill="url(#pin)"/>
+  <circle cx="688" cy="424" r="12" fill="#ffffff"/>
+
+  <!-- accents -->
+  <circle cx="140" cy="52" r="6" fill="#dbeafe"/>
+  <circle cx="752" cy="96" r="8" fill="#93c5fd" fill-opacity="0.5"/>
+</svg>

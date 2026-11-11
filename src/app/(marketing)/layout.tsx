@@ -31,6 +31,11 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                   </Link>
                 </li>
                 <li>
+                  <Link href="/services" className="text-muted-foreground hover:text-foreground">
+                    Services
+                  </Link>
+                </li>
+                <li>
                   <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
                     Pricing
                   </Link>

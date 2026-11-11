@@ -5,6 +5,7 @@ import { auth } from '@/lib/better-auth';
 const PUBLIC_ROUTES: readonly string[] = [
   '/',
   '/features',
+  '/services',
   '/pricing',
   '/solutions',
   '/security',
@@ -24,6 +25,7 @@ const PUBLIC_ROUTES: readonly string[] = [
   '/favicon.ico',
   '/logo.svg',
   '/apple-touch-icon.png',
+  '/illustrations/',
   '/robots.txt',
   '/sitemap.xml',
   '/og.png',

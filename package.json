@@ -8,6 +8,7 @@
   "homepage": "https://cromstelit.com",
   "scripts": {
     "dev": "node scripts/dev.mjs",
+    "render:illustrations": "node scripts/render-illustrations.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
