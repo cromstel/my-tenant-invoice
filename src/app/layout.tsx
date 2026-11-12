@@ -1,18 +1,28 @@
 import '../styles/globals.css';
 
 import type { Metadata, Viewport } from 'next';
-import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import { cn } from '@/lib/utils';
 
-const fontSans = FontSans({
-  subsets: ['latin'],
+// The font files are committed under app/fonts rather than downloaded from
+// Google at build time. That keeps the build independent of network access,
+// and it means dev can never quietly fall back to a system font when the
+// network is briefly unavailable. Each file is the latin variable subset, so
+// one file per family covers every weight the product uses. Their licenses
+// sit beside them.
+const inter = localFont({
+  src: './fonts/inter-latin-variable.woff2',
   variable: '--font-inter',
+  weight: '100 900',
+  display: 'swap',
 });
 
-const fontMono = FontMono({
-  subsets: ['latin'],
+const jetbrainsMono = localFont({
+  src: './fonts/jetbrains-mono-latin-variable.woff2',
   variable: '--font-jetbrains-mono',
+  weight: '100 800',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -104,8 +114,8 @@ export default function RootLayout({ children }: RootLayoutProps): React.ReactNo
     <html
       lang="en"
       className={cn(
-        fontSans.variable,
-        fontMono.variable,
+        inter.variable,
+        jetbrainsMono.variable,
         'min-h-screen bg-background font-sans antialiased',
       )}
       suppressHydrationWarning
