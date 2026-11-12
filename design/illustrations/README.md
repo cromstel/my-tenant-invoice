@@ -11,8 +11,20 @@ npm run render:illustrations
 ```
 
 The script (`scripts/render-illustrations.mjs`) opens each SVG in Chromium and
-writes a lossless PNG to `public/illustrations/`. Next.js then serves those
-PNGs as WebP or AVIF, sized to the requesting device.
+writes a lossless PNG to the public directory that serves it. Next.js then
+serves those PNGs as WebP or AVIF, sized to the requesting device.
+
+Two groups are rendered, and the script lists them explicitly rather than
+scanning the folder:
+
+| Group | Master | Served as |
+| --- | --- | --- |
+| Page illustrations | `design/illustrations/<name>.svg` | `public/illustrations/<name>.png` |
+| Team portraits | `design/illustrations/team-<slug>.svg` | `public/team/<slug>.png` |
+
+A new master does nothing until its name is added to the matching group, so a
+forgotten entry fails silently. Team portraits are 1:1 squares, which is what
+the card grid expects.
 
 Re-run the script after editing an SVG, and commit both the master and the
 rendered PNG so the diff shows what changed.

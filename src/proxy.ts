@@ -26,6 +26,9 @@ const PUBLIC_ROUTES: readonly string[] = [
   '/logo.svg',
   '/apple-touch-icon.png',
   '/illustrations/',
+  // Team portraits. No trailing slash, so the bare path matches as well as
+  // everything beneath it.
+  '/team',
   '/robots.txt',
   '/sitemap.xml',
   '/og.png',

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" shape-rendering="geometricPrecision">
+  <!-- background -->
+  <rect x="0" y="0" width="600" height="600" fill="#f1f5f9"/>
+
+  <!-- frame -->
+  <circle cx="300" cy="278" r="260" fill="#dbeafe"/>
+
+  <!-- contact shadow -->
+  <ellipse cx="300" cy="556" rx="232" ry="26" fill="#0f172a" fill-opacity="0.06"/>
+
+  <!-- shoulders -->
+  <path d="M 104 600 C 104 500 176 438 300 424 C 424 438 496 500 496 600 Z" fill="#334155" stroke="#0f172a" stroke-opacity="0.18" stroke-width="3"/>
+
+  <!-- collar -->
+  <path d="M 250 448 C 272 484 328 484 350 448" fill="none" stroke="#93c5fd" stroke-opacity="0.35" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- neck -->
+  <rect x="276" y="336" width="48" height="92" rx="20" fill="#93c5fd"/>
+
+  <!-- head -->
+  <circle cx="300" cy="262" r="98" fill="#93c5fd"/>
+
+  <!-- hair -->
+  <path d="M 204 272 C 204 194 248 152 300 152 C 352 152 396 194 396 272 C 396 252 382 232 358 222 C 336 214 264 214 242 222 C 218 232 204 252 204 272 Z" fill="#0f172a"/>
+
+  <!-- eyes -->
+  <circle cx="270" cy="274" r="9" fill="#0f172a"/>
+  <circle cx="330" cy="274" r="9" fill="#0f172a"/>
+
+  <!-- security motif -->
+  <path d="M 480 424 L 528 442 L 528 480 C 528 508 508 526 480 538 C 452 526 432 508 432 480 L 432 442 Z" fill="#143694"/>
+  <path d="M 480 444 L 512 456 L 512 480 C 512 498 498 510 480 518 C 462 510 448 498 448 480 L 448 456 Z" fill="#dbeafe"/>
+  <rect x="477" y="458" width="6" height="42" rx="3" fill="#93c5fd"/>
+</svg>

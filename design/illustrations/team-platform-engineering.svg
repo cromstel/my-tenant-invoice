@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" shape-rendering="geometricPrecision">
+  <!-- background -->
+  <rect x="0" y="0" width="600" height="600" fill="#f1f5f9"/>
+
+  <!-- frame -->
+  <circle cx="300" cy="278" r="260" fill="#dbeafe"/>
+
+  <!-- contact shadow -->
+  <ellipse cx="300" cy="556" rx="232" ry="26" fill="#0f172a" fill-opacity="0.06"/>
+
+  <!-- shoulders -->
+  <path d="M 104 600 C 104 500 176 438 300 424 C 424 438 496 500 496 600 Z" fill="#334155"/>
+
+  <!-- collar -->
+  <path d="M 250 448 C 272 484 328 484 350 448" fill="none" stroke="#93c5fd" stroke-opacity="0.75" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- neck -->
+  <rect x="276" y="336" width="48" height="92" rx="20" fill="#93c5fd"/>
+
+  <!-- head -->
+  <circle cx="300" cy="262" r="98" fill="#93c5fd"/>
+
+  <!-- hair -->
+  <path d="M 202 288 C 198 200 244 150 302 150 C 362 150 404 200 398 288 C 392 250 374 220 340 208 C 318 200 292 204 270 218 C 244 234 216 250 202 288 Z" fill="#0f172a"/>
+
+  <!-- eyes -->
+  <circle cx="270" cy="278" r="9" fill="#0f172a"/>
+  <circle cx="330" cy="278" r="9" fill="#0f172a"/>
+
+  <!-- role motif: layer stack -->
+  <rect x="424" y="428" width="86" height="26" rx="12" fill="#93c5fd"/>
+  <rect x="436" y="454" width="86" height="26" rx="12" fill="#3b82f6"/>
+  <rect x="448" y="480" width="86" height="26" rx="12" fill="#143694"/>
+</svg>
