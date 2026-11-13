@@ -12,6 +12,9 @@ const TEAM_NAMES = [
   'Customer Success',
 ] as const;
 
+/** The hero and the story illustration; the portraits are counted separately. */
+const PAGE_ILLUSTRATIONS = 2;
+
 /**
  * Scrolls the whole page so that the lazily loaded portraits are requested,
  * then waits until every image in the document has decoded.
@@ -72,6 +75,17 @@ test.describe('about page', () => {
     await expect(stats).toHaveCount(4);
   });
 
+  test('centres the platform numbers heading and its description', async ({ page }) => {
+    await page.goto('/about');
+
+    const section = page.locator('section[aria-labelledby="about-stats-heading"]');
+
+    await expect(
+      section.getByRole('heading', { name: 'The platform in numbers', exact: true }),
+    ).toHaveCSS('text-align', 'center');
+    await expect(section.locator('p').first()).toHaveCSS('text-align', 'center');
+  });
+
   test('presents one card and one portrait per team', async ({ page }) => {
     await page.goto('/about');
 
@@ -89,7 +103,7 @@ test.describe('about page', () => {
     const images = page.locator('main img');
     const count = await images.count();
 
-    expect(count).toBe(TEAM_NAMES.length + 1);
+    expect(count).toBe(TEAM_NAMES.length + PAGE_ILLUSTRATIONS);
 
     for (let index = 0; index < count; index += 1) {
       const width = await images
@@ -100,11 +114,23 @@ test.describe('about page', () => {
     }
   });
 
-  test('describes the hero and treats the portraits as decorative', async ({ page }) => {
+  test('describes the page illustrations and treats the portraits as decorative', async ({
+    page,
+  }) => {
     await page.goto('/about');
 
-    const heroAlt = await page.locator('main img').first().getAttribute('alt');
-    expect(heroAlt?.trim().length ?? 0).toBeGreaterThan(20);
+    const illustrations = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('main img'))
+        // The portraits are counted by their own assertion below.
+        .filter((image) => !image.closest('#team'))
+        .map((image) => (image as HTMLImageElement).alt.trim()),
+    );
+
+    expect(illustrations).toHaveLength(PAGE_ILLUSTRATIONS);
+
+    for (const alt of illustrations) {
+      expect(alt.length).toBeGreaterThan(20);
+    }
 
     const portraits = page.locator('#team img');
     const count = await portraits.count();

@@ -33,6 +33,7 @@ const GROUPS = [
       'services-invoicing',
       'services-payments',
       'about-hero',
+      'about-auditor',
     ],
   },
   {

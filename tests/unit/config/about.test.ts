@@ -46,11 +46,13 @@ describe('about page content', () => {
     }
   });
 
-  it('ships the hero illustration', () => {
-    const file = resolveAsset('/illustrations/about-hero.png');
+  it('ships every page illustration it references', () => {
+    for (const asset of ['/illustrations/about-hero.png', '/illustrations/about-auditor.png']) {
+      const file = resolveAsset(asset);
 
-    expect(existsSync(file)).toBe(true);
-    expect(statSync(file).size).toBeGreaterThan(5000);
+      expect(existsSync(file), `${asset} is missing`).toBe(true);
+      expect(statSync(file).size).toBeGreaterThan(5000);
+    }
   });
 
   it('keeps every fact a label with a value', () => {

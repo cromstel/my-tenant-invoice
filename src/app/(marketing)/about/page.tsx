@@ -65,13 +65,15 @@ export default function AboutPage(): React.JSX.Element {
 
       <section aria-labelledby="about-stats-heading" className="border-b bg-muted/40">
         <div className="container mx-auto px-4 py-14">
-          <h2 id="about-stats-heading" className="text-2xl font-bold tracking-tight sm:text-3xl">
-            The platform in numbers
-          </h2>
-          <p className="mt-3 max-w-3xl text-muted-foreground">
-            These counts are taken from the source rather than from marketing copy, so each one can
-            be checked against the repository that builds the product.
-          </p>
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 id="about-stats-heading" className="text-2xl font-bold tracking-tight sm:text-3xl">
+              The platform in numbers
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              These counts are taken from the source rather than from marketing copy, so each one
+              can be checked against the repository that builds the product.
+            </p>
+          </div>
           <dl className="mt-10 grid gap-8 border-y py-10 sm:grid-cols-2 lg:grid-cols-4">
             {platformStats.map((stat) => (
               <div key={stat.label}>
@@ -96,6 +98,16 @@ export default function AboutPage(): React.JSX.Element {
             >
               Billing that survives an audit
             </h2>
+            <div className="mt-10 overflow-hidden rounded-xl border bg-white shadow-soft">
+              <Image
+                src="/illustrations/about-auditor.png"
+                alt="An illustrated auditor reviewing a billing document through a magnifying glass, with a verified check badge beside it."
+                width={800}
+                height={600}
+                className="h-auto w-full"
+                sizes="(min-width: 1024px) 38vw, 100vw"
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-5 text-lg text-muted-foreground">
             <p>
