@@ -1,3 +1,17 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Security',
+  description:
+    "How myTenant Invoice isolates each organization's data, encrypts information in transit and at rest, controls access, and runs its infrastructure.",
+  alternates: { canonical: '/security' },
+  openGraph: {
+    title: 'Security · myTenant Invoice',
+    description: 'Tenant isolation, encryption, access control, and infrastructure practices.',
+    url: '/security',
+  },
+};
+
 export default function SecurityPage() {
   return (
     <div className="container mx-auto max-w-3xl px-4 py-16">

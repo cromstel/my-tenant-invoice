@@ -1,10 +1,24 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Pricing',
+  description:
+    'Simple monthly plans for myTenant Invoice: Starter, Professional, and Enterprise, each with a free trial.',
+  alternates: { canonical: '/pricing' },
+  openGraph: {
+    title: 'Pricing · myTenant Invoice',
+    description: 'Simple monthly plans for property billing on a multi-tenant platform.',
+    url: '/pricing',
+  },
+};
+
 export default function PricingPage() {
   const plans = [
     {
       name: 'Starter',
       price: '$49',
       period: '/month',
-      features: ['Up to 50 units', 'Basic billing', 'Email support', 'Client portal'],
+      features: ['Up to 50 units', 'Basic billing', 'Email support', 'Invoice history'],
       cta: 'Start Free Trial',
     },
     {

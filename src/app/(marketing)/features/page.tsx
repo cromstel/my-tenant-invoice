@@ -1,4 +1,17 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Features',
+  description:
+    'Multi-tenant data isolation, a flat/tiered/block tariff engine, property and meter management, the invoice lifecycle, payments, reports, audit logging, and role-based access.',
+  alternates: { canonical: '/features' },
+  openGraph: {
+    title: 'Features · myTenant Invoice',
+    description: 'Everything you need to manage billing, properties, and tenants in one platform.',
+    url: '/features',
+  },
+};
 
 export default function FeaturesPage() {
   const features = [

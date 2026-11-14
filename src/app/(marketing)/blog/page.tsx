@@ -1,3 +1,17 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description:
+    'Guides and updates from the myTenant Invoice team on invoicing, property billing, and metered utilities.',
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    title: 'Blog · myTenant Invoice',
+    description: 'Guides and updates on invoicing, property billing, and metered utilities.',
+    url: '/blog',
+  },
+};
+
 const blogPosts = [
   {
     slug: 'getting-started-with-mytenant-invoice',

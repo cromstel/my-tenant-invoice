@@ -1,7 +1,21 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/lib/auth';
+
+export const metadata: Metadata = {
+  title: { absolute: 'myTenant Invoice' },
+  description:
+    'Production-grade SaaS multi-tenant invoicing, property management, utility meter billing, and financial reporting for property managers, landlords, housing associations, and utility operators.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: 'myTenant Invoice',
+    description:
+      'Smart invoicing and property billing on one multi-tenant platform, by CromStel IT Group.',
+    url: '/',
+  },
+};
 
 export default async function MarketingHomePage(): Promise<React.ReactNode> {
   const user = await getCurrentUser();

@@ -1,4 +1,17 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Solutions',
+  description:
+    'How myTenant Invoice fits property management, utility billing, residential housing, commercial properties, municipal billing, and build-to-rent operations.',
+  alternates: { canonical: '/solutions' },
+  openGraph: {
+    title: 'Solutions · myTenant Invoice',
+    description: 'Tailored solutions for every type of property and billing operation.',
+    url: '/solutions',
+  },
+};
 
 export default function SolutionsPage() {
   const solutions = [

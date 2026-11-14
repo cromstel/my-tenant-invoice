@@ -1,3 +1,17 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description:
+    'How myTenant Invoice collects, uses, protects, and shares information, and the rights you have over your data.',
+  alternates: { canonical: '/privacy' },
+  openGraph: {
+    title: 'Privacy Policy · myTenant Invoice',
+    description: 'How myTenant Invoice handles and protects your information.',
+    url: '/privacy',
+  },
+};
+
 export default function PrivacyPage() {
   return (
     <div className="container mx-auto max-w-3xl px-4 py-16">

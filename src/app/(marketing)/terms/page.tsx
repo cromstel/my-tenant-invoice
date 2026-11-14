@@ -1,3 +1,17 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service',
+  description:
+    'The terms that govern use of myTenant Invoice: accounts, payment terms, data ownership, and liability.',
+  alternates: { canonical: '/terms' },
+  openGraph: {
+    title: 'Terms of Service · myTenant Invoice',
+    description: 'The terms that govern use of myTenant Invoice.',
+    url: '/terms',
+  },
+};
+
 export default function TermsPage() {
   return (
     <div className="container mx-auto max-w-3xl px-4 py-16">
