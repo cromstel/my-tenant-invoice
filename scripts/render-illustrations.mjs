@@ -2,9 +2,11 @@
  * Rasterises the SVG illustration masters into the PNG files the site serves.
  *
  * The SVGs under `design/illustrations/` are the editable source of truth.
- * This script renders each one in Chromium and writes a lossless PNG into the
- * public directory that serves it, where Next.js optimises it into WebP or
- * AVIF on the way to the browser.
+ * This script renders each one in Chromium, then lossily compresses the PNG
+ * (palette quantisation) before writing it into the public directory that
+ * serves it, keeping every asset inside the size budget documented in
+ * `docs/06-ui-ux/image-guidelines.md`. Next.js re-optimises into WebP or AVIF
+ * on the way to the browser.
  *
  * Two groups are rendered. Page illustrations are served from
  * `public/illustrations/`. Team portraits are served from `public/team/`,
@@ -14,12 +16,22 @@
  * Usage: npm run render:illustrations
  */
 import { existsSync } from 'node:fs';
-import { mkdir, readFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { chromium } from '@playwright/test';
+import sharp from 'sharp';
 
 const SOURCE_DIR = path.join('design', 'illustrations');
+
+/** Palette-quantisation settings; empirically q90 is both smaller and more
+ * faithful than lower tiers (sharp's palette mode is not monotonic). */
+const PNG_OPTIONS = { palette: true, quality: 90, effort: 10 };
+
+/** Lossily compresses a rendered PNG buffer in place of a lossless write. */
+async function optimise(buffer) {
+  return sharp(buffer).png(PNG_OPTIONS).toBuffer();
+}
 
 const GROUPS = [
   {
@@ -90,9 +102,11 @@ async function main() {
         );
 
         const target = path.join(group.outputDir, `${name}.png`);
-        await page.locator('svg').first().screenshot({ path: target });
+        const rendered = await page.locator('svg').first().screenshot();
+        const optimised = await optimise(rendered);
+        await writeFile(target, optimised);
 
-        console.log(`${target}  ${width}x${height}`);
+        console.log(`${target}  ${width}x${height}  ${(optimised.length / 1024).toFixed(1)} KiB`);
       }
     }
   } finally {
