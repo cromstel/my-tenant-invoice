@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 const blogPosts = [
   {
     slug: 'getting-started-with-mytenant-invoice',
@@ -12,7 +10,7 @@ const blogPosts = [
   {
     slug: 'understanding-tariff-types',
     title: 'Understanding Tariff Types',
-    excerpt: 'A comprehensive guide to flat-rate, tiered, block, and time-of-use tariffs.',
+    excerpt: 'A comprehensive guide to flat-rate, tiered, and block tariffs.',
     date: '2026-10-28',
     category: 'Billing',
   },
@@ -50,12 +48,7 @@ export default function BlogPage() {
             </div>
             <h2 className="mb-2 text-xl font-semibold">{post.title}</h2>
             <p className="mb-4 text-sm text-muted-foreground">{post.excerpt}</p>
-            <Link
-              href={`/blog/${post.slug}`}
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              Read more →
-            </Link>
+            <p className="text-xs text-muted-foreground">Full guide coming soon.</p>
           </article>
         ))}
       </div>

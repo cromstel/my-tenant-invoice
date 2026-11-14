@@ -21,6 +21,8 @@ const PUBLIC_ROUTES: readonly string[] = [
   '/auth/error',
   '/auth/admin/login',
   '/api/auth/',
+  // No trailing slash, so the bare POST path matches as well as subpaths.
+  '/api/contact',
   '/_next/',
   '/favicon.ico',
   '/logo.svg',

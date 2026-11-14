@@ -49,7 +49,7 @@ export default async function MarketingHomePage(): Promise<React.ReactNode> {
             },
             {
               title: 'Smart Billing',
-              desc: 'Flexible tariff engine with flat, tiered, block, and time-of-use rates.',
+              desc: 'Flexible tariff engine with flat, tiered, and block rates.',
             },
             {
               title: 'Property Management',
@@ -64,18 +64,10 @@ export default async function MarketingHomePage(): Promise<React.ReactNode> {
               desc: 'Record payments, allocations, refunds, and reconciliation.',
             },
             {
-              title: 'Client Portal',
-              desc: 'Self-service portal for tenants to view invoices and make payments.',
-            },
-            {
               title: 'Financial Reports',
               desc: 'Revenue, aging, consumption, and occupancy reports.',
             },
             { title: 'Audit Logging', desc: 'Comprehensive audit trail for all critical actions.' },
-            {
-              title: 'AI Assistant',
-              desc: 'Secure AI assistant for invoice explanations and tariff insights.',
-            },
           ].map((feature) => (
             <div key={feature.title} className="rounded-lg border bg-card p-6 shadow-sm">
               <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
@@ -89,7 +81,7 @@ export default async function MarketingHomePage(): Promise<React.ReactNode> {
       <section className="container mx-auto px-4 py-16 text-center">
         <h2 className="mb-4 text-3xl font-bold">Ready to get started?</h2>
         <p className="mb-8 text-muted-foreground">
-          Join organizations already using myTenant Invoice to streamline their billing.
+          See how myTenant Invoice can streamline your billing.
         </p>
         <Link
           href="/auth/signup"

@@ -8,7 +8,7 @@ export default function FeaturesPage() {
     },
     {
       title: 'Smart Billing Engine',
-      desc: 'Flexible tariff engine supporting flat-rate, tiered, block, time-of-use, and seasonal pricing models.',
+      desc: 'Flexible tariff engine supporting flat-rate, tiered, and block pricing models.',
     },
     {
       title: 'Property Management',
@@ -20,15 +20,11 @@ export default function FeaturesPage() {
     },
     {
       title: 'Invoice Lifecycle',
-      desc: 'Full invoice workflow from draft to payment with approval, sending, and voiding.',
+      desc: 'Full invoice workflow from draft to payment with approval, dispatch, and voiding.',
     },
     {
       title: 'Payment Processing',
       desc: 'Record payments, allocate to invoices, process refunds, and reconcile accounts.',
-    },
-    {
-      title: 'Client Portal',
-      desc: 'Self-service portal for tenants to view invoices, make payments, and track consumption.',
     },
     {
       title: 'Financial Reports',
@@ -37,10 +33,6 @@ export default function FeaturesPage() {
     {
       title: 'Audit Logging',
       desc: 'Comprehensive audit trail for all critical actions and changes.',
-    },
-    {
-      title: 'AI Assistant',
-      desc: 'Secure AI assistant for invoice explanations, tariff insights, and support.',
     },
     {
       title: 'Role-Based Access',

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function SolutionsPage() {
   const solutions = [
     {
@@ -13,7 +15,7 @@ export default function SolutionsPage() {
     {
       title: 'Residential Housing',
       desc: 'Ideal for housing associations, landlords, and residential property operators.',
-      features: ['Tenant portal', 'Recurring rent', 'Service charges', 'Payment tracking'],
+      features: ['Invoice history', 'Recurring rent', 'Service charges', 'Payment tracking'],
     },
     {
       title: 'Commercial Properties',
@@ -35,7 +37,7 @@ export default function SolutionsPage() {
       desc: 'End-to-end billing for build-to-rent operators with automated invoicing and tenant self-service.',
       features: [
         'Automated billing',
-        'Tenant portal',
+        'Occupancy reports',
         'Payment processing',
         'Consumption analytics',
       ],
@@ -65,12 +67,12 @@ export default function SolutionsPage() {
         ))}
       </div>
       <div className="mt-12 text-center">
-        <a
+        <Link
           href="/auth/signup"
           className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
         >
           Get Started
-        </a>
+        </Link>
       </div>
     </div>
   );

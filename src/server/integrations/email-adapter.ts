@@ -11,6 +11,7 @@ export interface EmailOptions {
   html: string;
   from?: string;
   text?: string;
+  replyTo?: string;
 }
 
 export class EmailAdapter {
@@ -51,6 +52,7 @@ export class EmailAdapter {
           subject: options.subject,
           html: options.html,
           text: options.text,
+          replyTo: options.replyTo,
         });
         logger.info(
           { to: options.to, subject: options.subject, id: result.data?.id },
@@ -70,6 +72,7 @@ export class EmailAdapter {
           subject: options.subject,
           html: options.html,
           text: options.text,
+          replyTo: options.replyTo,
         });
         logger.info(
           { to: options.to, subject: options.subject, id: info.messageId },
