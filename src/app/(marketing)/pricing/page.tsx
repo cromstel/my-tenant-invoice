@@ -42,7 +42,7 @@ export default function PricingPage() {
       features: [
         'Unlimited units',
         'Dedicated support',
-        'SLA guarantee',
+        'Custom contracts',
         'Custom integrations',
         'On-premise option',
       ],

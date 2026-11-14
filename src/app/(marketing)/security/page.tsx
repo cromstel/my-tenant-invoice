@@ -43,17 +43,17 @@ export default function SecurityPage() {
           </p>
         </section>
         <section>
-          <h2 className="mb-3 text-2xl font-semibold">Compliance</h2>
+          <h2 className="mb-3 text-2xl font-semibold">Audit Logging</h2>
           <p className="text-muted-foreground">
-            SOC 2-aligned access controls, comprehensive audit logging, and regular security
-            assessments.
+            Every critical action is recorded in a comprehensive audit trail, and access is granted
+            through role-based permissions scoped to each organization.
           </p>
         </section>
         <section>
           <h2 className="mb-3 text-2xl font-semibold">Infrastructure</h2>
           <p className="text-muted-foreground">
-            Hosted on secure cloud infrastructure with automated backups, disaster recovery, and
-            99.9% uptime SLA.
+            Hosted on managed cloud infrastructure with automated backups. We publish what we
+            actually operate rather than aspirational certifications or uptime promises.
           </p>
         </section>
       </div>

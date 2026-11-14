@@ -35,8 +35,8 @@ export default function PrivacyPage() {
         <section>
           <h2 className="mb-2 text-xl font-semibold text-foreground">3. Data Security</h2>
           <p>
-            We implement industry-standard security measures including encryption, access controls,
-            and regular security assessments to protect your data.
+            We protect your data with encryption in transit and at rest, role-based access controls,
+            and a comprehensive audit trail of critical actions.
           </p>
         </section>
         <section>
