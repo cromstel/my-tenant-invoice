@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Pricing',
   description:
-    'Simple monthly plans for myTenant Invoice: Starter, Professional, and Enterprise, each with a free trial.',
+    'myTenant Invoice plans: a free tier to start, Pro at $149 per month, and custom Enterprise contracts with an on-premise or hybrid deployment option.',
   alternates: { canonical: '/pricing' },
   openGraph: {
     title: 'Pricing · myTenant Invoice',
@@ -15,24 +16,29 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   const plans = [
     {
-      name: 'Starter',
-      price: '$49',
+      name: 'Free',
+      price: '$0',
       period: '/month',
-      features: ['Up to 50 units', 'Basic billing', 'Email support', 'Invoice history'],
-      cta: 'Start Free Trial',
+      features: [
+        'Up to 20 invoices / month',
+        '3 properties',
+        '10 end-clients',
+        'No credit card required',
+      ],
+      cta: 'Get Started Free',
+      href: '/auth/signup',
     },
     {
-      name: 'Professional',
+      name: 'Pro',
       price: '$149',
       period: '/month',
       features: [
-        'Up to 500 units',
-        'Advanced tariffs',
-        'Priority support',
-        'Custom branding',
-        'API access',
+        '50–5,000 active units',
+        '$1.20 per active unit / month',
+        'Unlimited invoices and properties',
       ],
       cta: 'Start Free Trial',
+      href: '/auth/signup',
       highlighted: true,
     },
     {
@@ -40,13 +46,14 @@ export default function PricingPage() {
       price: 'Custom',
       period: '',
       features: [
-        'Unlimited units',
-        'Dedicated support',
-        'Custom contracts',
-        'Custom integrations',
-        'On-premise option',
+        'Custom volume pricing',
+        'On-premise or hybrid deployment',
+        'Custom SLA',
+        'White-label branding',
+        'Dedicated CSM and support hotline',
       ],
       cta: 'Contact Sales',
+      href: '/contact',
     },
   ];
 
@@ -75,16 +82,16 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <a
-              href="/auth/signup"
-              className={`block w-full rounded-md px-4 py-2 text-center text-sm font-medium shadow ${
+            <Link
+              href={plan.href}
+              className={`block min-h-11 w-full rounded-md px-4 py-3 text-center text-sm font-medium shadow ${
                 plan.highlighted
                   ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                   : 'border hover:bg-accent'
               }`}
             >
               {plan.cta}
-            </a>
+            </Link>
           </div>
         ))}
       </div>
