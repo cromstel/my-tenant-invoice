@@ -11,6 +11,7 @@ node_modules/
 # ============================================================
 coverage/
 .playwright/
+.playwright-mcp/
 test-results/
 playwright-report/
 blob-report/
@@ -22,6 +23,7 @@ blob-report/
 out/
 build/
 dist/
+tsconfig.tsbuildinfo
 
 # ============================================================
 # Prisma

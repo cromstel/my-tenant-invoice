@@ -26,32 +26,50 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               <h4 className="mb-2 font-semibold">Product</h4>
               <ul className="space-y-1 text-sm">
                 <li>
-                  <Link href="/features" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/features"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Features
                   </Link>
                 </li>
                 <li>
-                  <Link href="/solutions" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/solutions"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Solutions
                   </Link>
                 </li>
                 <li>
-                  <Link href="/services" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/services"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Services
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/pricing"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Pricing
                   </Link>
                 </li>
                 <li>
-                  <Link href="/blog" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/blog"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Blog
                   </Link>
                 </li>
                 <li>
-                  <Link href="/security" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/security"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Security
                   </Link>
                 </li>
@@ -61,12 +79,18 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               <h4 className="mb-2 font-semibold">Company</h4>
               <ul className="space-y-1 text-sm">
                 <li>
-                  <Link href="/about" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/about"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     About
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/contact"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Contact
                   </Link>
                 </li>
@@ -76,12 +100,18 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               <h4 className="mb-2 font-semibold">Legal</h4>
               <ul className="space-y-1 text-sm">
                 <li>
-                  <Link href="/privacy" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/privacy"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terms" className="text-muted-foreground hover:text-foreground">
+                  <Link
+                    href="/terms"
+                    className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
+                  >
                     Terms of Service
                   </Link>
                 </li>
@@ -94,7 +124,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               href="https://cromstelit.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium hover:text-foreground"
+              className="-my-3 inline-block py-3 font-medium hover:text-foreground"
             >
               CromStel IT Group
             </a>

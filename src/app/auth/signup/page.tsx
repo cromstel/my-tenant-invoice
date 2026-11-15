@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { Suspense, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -63,7 +64,6 @@ function SignupForm(): React.ReactNode {
         <Card>
           <CardHeader className="space-y-1">
             <div className="mb-5 flex justify-center">
-              {}
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
 
@@ -174,12 +174,12 @@ function SignupForm(): React.ReactNode {
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
               Already have an account?{' '}
-              <a
+              <Link
                 href="/auth/login"
                 className="font-medium text-primary underline-offset-4 hover:underline"
               >
                 Sign in
-              </a>
+              </Link>
             </div>
           </CardContent>
         </Card>

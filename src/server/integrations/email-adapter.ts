@@ -24,10 +24,18 @@ export class EmailAdapter {
     }
 
     if (env.SMTP_HOST) {
+      // Port 465 speaks implicit TLS from the first byte; every other port
+      // (587, 25) expects plaintext EHLO and upgrades with STARTTLS. Forcing
+      // `secure: true` on a STARTTLS port fails with ERR_SSL_WRONG_VERSION_NUMBER.
+      const port = env.SMTP_PORT ?? 587;
+      const secure = port === 465 ? (env.SMTP_SECURE ?? true) : false;
+
       this.transporter = nodemailer.createTransport({
         host: env.SMTP_HOST,
-        port: env.SMTP_PORT ?? 587,
-        secure: env.SMTP_SECURE ?? false,
+        port,
+        secure,
+        // Never fall back to plaintext when using STARTTLS.
+        requireTLS: !secure,
         auth:
           env.SMTP_USER && env.SMTP_PASSWORD
             ? { user: env.SMTP_USER, pass: env.SMTP_PASSWORD }
@@ -75,7 +83,7 @@ export class EmailAdapter {
           replyTo: options.replyTo,
         });
         logger.info(
-          { to: options.to, subject: options.subject, id: info.messageId },
+          { to: options.to, subject: options.subject, id: info.messageId, accepted: info.accepted },
           'Email sent via SMTP',
         );
         return { id: info.messageId };

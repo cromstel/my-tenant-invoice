@@ -63,7 +63,6 @@ function AdminLoginForm(): React.ReactNode {
         <Card className="border-slate-700 bg-slate-800/60 text-slate-100 shadow-2xl backdrop-blur-sm supports-[backdrop-filter]:bg-slate-800/40">
           <CardHeader className="space-y-1 border-b border-slate-700 pb-6">
             <div className="mb-3 flex items-center justify-center">
-              {}
               <img
                 src="/logo.svg"
                 alt="myTenant Invoice"

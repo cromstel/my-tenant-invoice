@@ -46,11 +46,15 @@ export class InvoiceService {
     return invoice;
   }
 
-  async list(orgId?: string, status?: string) {
+  async list(orgId?: string, status?: string, includeCustomer: boolean = true) {
     const organizationId = orgId ?? (await getActiveOrganizationId());
     const where: Record<string, unknown> = { organizationId };
     if (status) where.status = status;
-    return this.invoiceRepo.findAll(where);
+    // Only `customer` is an Invoice-level relation; `service`,
+    // `tariffVersion`, and `meter` live on InvoiceItem and must be nested
+    // through `items` (see getById). Including them here would throw.
+    const include = includeCustomer ? { customer: { select: { fullName: true } } } : undefined;
+    return this.invoiceRepo.findAll(where, include);
   }
 
   async create(input: CreateInvoiceInput) {

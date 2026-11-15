@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -61,7 +62,6 @@ function ResetPasswordForm(): React.ReactNode {
         <Card>
           <CardHeader className="space-y-1">
             <div className="mb-5 flex justify-center">
-              {}
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
 
@@ -76,9 +76,9 @@ function ResetPasswordForm(): React.ReactNode {
             {!token ? (
               <div className="rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
                 Invalid or missing reset token. Please request a new password reset link from the{' '}
-                <a href="/auth/forgot-password" className="underline">
+                <Link href="/auth/forgot-password" className="underline">
                   forgot password page
-                </a>
+                </Link>
                 .
               </div>
             ) : null}
@@ -134,12 +134,12 @@ function ResetPasswordForm(): React.ReactNode {
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              <a
+              <Link
                 href="/auth/login"
                 className="font-medium text-primary underline-offset-4 hover:underline"
               >
                 Back to sign in
-              </a>
+              </Link>
             </div>
           </CardContent>
         </Card>

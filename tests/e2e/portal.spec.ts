@@ -9,7 +9,7 @@ test.describe('Client Portal', () => {
 
   test('should display platform page', async ({ page }) => {
     await page.goto('/platform');
-    // Should redirect to login if not authenticated
-    await expect(page).toHaveURL(/\/auth\/login/);
+    // Platform routes are platform-admin-only and redirect to the admin login
+    await expect(page).toHaveURL(/\/auth\/admin\/login/);
   });
 });

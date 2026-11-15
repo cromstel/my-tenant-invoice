@@ -27,7 +27,7 @@
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:migrate:reset": "prisma migrate reset",
     "prisma:db:push": "prisma db push",
-    "prisma:seed": "tsx prisma/seed.ts",
+    "prisma:seed": "tsx --env-file-if-exists=.env --env-file-if-exists=.env.local prisma/seed.ts",
     "prisma:studio": "prisma studio",
     "audit:deps": "npm audit",
     "audit:licenses": "license-checker --production --summary",

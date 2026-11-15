@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -63,7 +64,6 @@ function LoginForm(): React.ReactNode {
         <Card>
           <CardHeader className="space-y-1">
             <div className="mb-5 flex justify-center">
-              {}
               <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
             </div>
 
@@ -95,12 +95,12 @@ function LoginForm(): React.ReactNode {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <a
+                  <Link
                     href="/auth/forgot-password"
                     className="text-sm font-medium text-primary underline-offset-4 hover:underline"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
                 <Input
                   id="password"
@@ -128,12 +128,12 @@ function LoginForm(): React.ReactNode {
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{' '}
-              <a
+              <Link
                 href="/auth/signup"
                 className="font-medium text-primary underline-offset-4 hover:underline"
               >
                 Create one
-              </a>
+              </Link>
             </div>
           </CardContent>
         </Card>

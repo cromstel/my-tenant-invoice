@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/lib/better-auth';
+import { ACTIVE_TENANT_COOKIE, loadAuthContext } from '@/server/auth-context';
 
 const PUBLIC_ROUTES: readonly string[] = [
   '/',
@@ -37,7 +38,7 @@ const PUBLIC_ROUTES: readonly string[] = [
   '/pay/',
 ] as const;
 
-const PLATFORM_ADMIN_ROUTES: readonly string[] = ['/admin', '/api/platform'] as const;
+const PLATFORM_ADMIN_ROUTES: readonly string[] = ['/platform', '/admin', '/api/platform'] as const;
 
 function isPublicRoute(pathname: string): boolean {
   return PUBLIC_ROUTES.some((route) =>
@@ -82,17 +83,13 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
     const session = await auth.api.getSession({ headers: request.headers });
     if (session?.user) {
       authenticated = true;
-      const u = session.user as { activeTenantId?: string; roles?: Record<string, string[]> };
-      activeTenantId = u.activeTenantId ?? null;
-      // Check platform admin
-      if (u.roles) {
-        for (const orgId of Object.keys(u.roles)) {
-          if (u.roles[orgId]?.includes('PLATFORM_ADMIN')) {
-            isPlatformAdminUser = true;
-            break;
-          }
-        }
-      }
+      const u = session.user as { id: string; email: string; name?: string | null };
+      const context = await loadAuthContext(
+        { id: u.id, email: u.email, name: u.name ?? null },
+        request.cookies.get(ACTIVE_TENANT_COOKIE)?.value,
+      );
+      activeTenantId = context.activeTenantId;
+      isPlatformAdminUser = context.isPlatformAdmin;
     }
   } catch {
     authenticated = false;

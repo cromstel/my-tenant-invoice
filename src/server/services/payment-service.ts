@@ -34,7 +34,8 @@ export class PaymentService {
     const organizationId = orgId ?? (await getActiveOrganizationId());
     const where: Record<string, unknown> = { organizationId };
     if (status) where.status = status;
-    return this.paymentRepo.findAll(where);
+    const include = { customer: { select: { fullName: true } } };
+    return this.paymentRepo.findAll(where, include);
   }
 
   async recordPayment(input: RecordPaymentInput) {

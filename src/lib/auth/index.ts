@@ -1,8 +1,10 @@
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
+import { cache } from 'react';
 
-import { ROLE_PERMISSIONS, type RoleName } from '@/config/roles';
+import { roleHasPermission, type RoleName } from '@/config/roles';
 import { auth } from '@/lib/better-auth';
 import { AuthorizationError } from '@/lib/errors';
+import { ACTIVE_TENANT_COOKIE, loadAuthContext } from '@/server/auth-context';
 
 export type CurrentUser = {
   id: string;
@@ -10,6 +12,7 @@ export type CurrentUser = {
   name: string | null;
   image: string | null;
   activeTenantId: string | null;
+  activeTenantName: string | null;
   roles: Record<string, string[]>;
   impersonatedTenantId: string | null;
   impersonatedBy: string | null;
@@ -17,26 +20,45 @@ export type CurrentUser = {
 
 /**
  * Returns the current authenticated user from the Better Auth session.
+ *
+ * Roles and the active tenant are read from the membership tables, so a
+ * role change takes effect on the next request instead of at the next sign-in.
  */
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user) return null;
     const user = session.user as Record<string, unknown>;
+    const cookieStore = await cookies();
+    const context = await loadAuthContext(
+      {
+        id: user.id as string,
+        email: (user.email as string) ?? '',
+        name: (user.name as string) ?? null,
+        image: (user.image as string) ?? null,
+      },
+      cookieStore.get(ACTIVE_TENANT_COOKIE)?.value,
+    );
+
+    const activeTenant = context.tenantMemberships.find(
+      (membership) => membership.organizationId === context.activeTenantId,
+    );
+
     return {
-      id: user.id as string,
-      email: (user.email as string) ?? '',
-      name: (user.name as string) ?? null,
-      image: (user.image as string) ?? null,
-      activeTenantId: (user.activeTenantId as string) ?? null,
-      roles: (user.roles as Record<string, string[]>) ?? {},
+      id: context.userId,
+      email: context.email,
+      name: context.name,
+      image: context.image,
+      activeTenantId: context.activeTenantId,
+      activeTenantName: activeTenant?.organizationName ?? null,
+      roles: context.roles,
       impersonatedTenantId: (user.impersonatedTenantId as string) ?? null,
       impersonatedBy: (user.impersonatedBy as string) ?? null,
     };
   } catch {
     return null;
   }
-}
+});
 
 /**
  * Returns the current session or throws if not authenticated.
@@ -75,10 +97,7 @@ export async function hasPermission(permission: string): Promise<boolean> {
   const user = await getCurrentUser();
   if (!user || !user.activeTenantId) return false;
   const userRoles = user.roles[user.activeTenantId] ?? [];
-  return userRoles.some((role) => {
-    const perms = ROLE_PERMISSIONS[role as RoleName] ?? [];
-    return perms.includes(permission);
-  });
+  return userRoles.some((role) => roleHasPermission(role as RoleName, permission));
 }
 
 /**
