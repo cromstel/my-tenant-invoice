@@ -22,7 +22,7 @@ type FormValues = z.infer<typeof adminLoginFormSchema>;
 function AdminLoginForm(): React.ReactNode {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const callbackUrl = searchParams.get('callbackUrl') ?? '/admin';
+  const callbackUrl = searchParams.get('callbackUrl') ?? '/platform';
   const [error, setError] = useState<string | null>(null);
 
   const {

@@ -111,6 +111,12 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
       }
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
+
+    // `/admin` is the legacy alias for the platform dashboard; no page lives
+    // at /admin, so point operators at /platform instead of a 404.
+    if (path === '/admin') {
+      return NextResponse.redirect(new URL('/platform', request.url));
+    }
   }
 
   if (!authenticated) {

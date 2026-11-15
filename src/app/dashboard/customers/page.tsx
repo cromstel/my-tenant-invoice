@@ -1,5 +1,8 @@
+import Link from 'next/link';
+
 import { AppShell } from '@/components/app-shell/app-shell';
-import { createMetadata } from '@/lib/format';
+import { createMetadata, TOUCH_TARGET_CLASS } from '@/lib/format';
+import { cn } from '@/lib/utils';
 import { requireOrgUser } from '@/server/page-guards';
 import { services } from '@/server/services';
 
@@ -57,7 +60,17 @@ export default async function CustomersPage() {
               ) : (
                 customers.map((customer) => (
                   <tr key={customer.id} className="border-b">
-                    <td className="p-4 text-sm font-medium">{customer.fullName ?? 'Unnamed'}</td>
+                    <td className="p-4 text-sm font-medium">
+                      <Link
+                        href={`/dashboard/customers/${customer.id}`}
+                        className={cn(
+                          TOUCH_TARGET_CLASS,
+                          'inline-flex items-center text-primary underline-offset-4 hover:underline',
+                        )}
+                      >
+                        {customer.fullName ?? 'Unnamed'}
+                      </Link>
+                    </td>
                     <td className="p-4 text-sm">{customer.email ?? '-'}</td>
                     <td className="p-4 text-sm">{customer.type}</td>
                     <td className="p-4 text-sm">{customer.phoneNumber ?? '-'}</td>
