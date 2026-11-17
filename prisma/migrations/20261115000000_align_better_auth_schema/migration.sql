@@ -12,10 +12,10 @@
 -- No rows are dropped or rewritten; account and session were empty.
 
 -- DropIndex
-DROP INDEX `Account_provider_providerAccountId_key` ON `account`;
+DROP INDEX `Account_provider_providerAccountId_key` ON `Account`;
 
 -- AlterTable
-ALTER TABLE `account`
+ALTER TABLE `Account`
     ADD COLUMN `accessTokenExpiresAt` DATETIME(3) NULL,
     ADD COLUMN `accountId` VARCHAR(191) NOT NULL DEFAULT '',
     ADD COLUMN `password` VARCHAR(191) NULL,
@@ -26,7 +26,7 @@ ALTER TABLE `account`
     MODIFY `providerAccountId` VARCHAR(191) NULL;
 
 -- AlterTable
-ALTER TABLE `session`
+ALTER TABLE `Session`
     ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     ADD COLUMN `expiresAt` DATETIME(3) NOT NULL,
     ADD COLUMN `ipAddress` VARCHAR(191) NULL,
@@ -37,10 +37,10 @@ ALTER TABLE `session`
     MODIFY `expires` DATETIME(3) NULL;
 
 -- AlterTable
-ALTER TABLE `user` MODIFY `passwordHash` VARCHAR(191) NULL;
+ALTER TABLE `User` MODIFY `passwordHash` VARCHAR(191) NULL;
 
 -- CreateTable
-CREATE TABLE `verification` (
+CREATE TABLE `Verification` (
     `id` VARCHAR(191) NOT NULL,
     `identifier` VARCHAR(191) NOT NULL,
     `value` VARCHAR(191) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE `verification` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateIndex
-CREATE UNIQUE INDEX `Account_providerId_accountId_key` ON `account`(`providerId`, `accountId`);
+CREATE UNIQUE INDEX `Account_providerId_accountId_key` ON `Account`(`providerId`, `accountId`);
 
 -- CreateIndex
-CREATE UNIQUE INDEX `Session_token_key` ON `session`(`token`);
+CREATE UNIQUE INDEX `Session_token_key` ON `Session`(`token`);
