@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { authClient } from '@/lib/auth-client';
+import { safeRedirectPath } from '@/lib/safe-redirect';
 
 const adminLoginFormSchema = z.object({
   email: z.string().email('Please enter a valid admin email address'),
@@ -22,7 +23,7 @@ type FormValues = z.infer<typeof adminLoginFormSchema>;
 function AdminLoginForm(): React.ReactNode {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const callbackUrl = searchParams.get('callbackUrl') ?? '/platform';
+  const callbackUrl = safeRedirectPath(searchParams.get('callbackUrl'), '/platform');
   const [error, setError] = useState<string | null>(null);
 
   const {

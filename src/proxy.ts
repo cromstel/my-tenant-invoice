@@ -113,9 +113,10 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
     }
 
     // `/admin` is the legacy alias for the platform dashboard; no page lives
-    // at /admin, so point operators at /platform instead of a 404.
+    // at /admin, so point operators at /platform instead of a 404. A 308
+    // keeps the alias permanent and preserves the query string.
     if (path === '/admin') {
-      return NextResponse.redirect(new URL('/platform', request.url));
+      return NextResponse.redirect(new URL(`/platform${request.nextUrl.search}`, request.url), 308);
     }
   }
 

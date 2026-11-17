@@ -1,8 +1,6 @@
-import Link from 'next/link';
-
 import { AppShell } from '@/components/app-shell/app-shell';
-import { createMetadata, fmtDate, TOUCH_TARGET_CLASS, usd } from '@/lib/format';
-import { cn } from '@/lib/utils';
+import { RowLink } from '@/components/ui/row-link';
+import { createMetadata, fmtDate, usd } from '@/lib/format';
 import { requireOrgUser } from '@/server/page-guards';
 import { services } from '@/server/services';
 
@@ -66,15 +64,7 @@ export default async function LeasesPage() {
                 leases.map((lease) => (
                   <tr key={lease.id} className="border-b">
                     <td className="p-4 text-sm font-medium">
-                      <Link
-                        href={`/dashboard/leases/${lease.id}`}
-                        className={cn(
-                          TOUCH_TARGET_CLASS,
-                          'inline-flex items-center text-primary underline-offset-4 hover:underline',
-                        )}
-                      >
-                        {lease.leaseNumber}
-                      </Link>
+                      <RowLink href={`/dashboard/leases/${lease.id}`}>{lease.leaseNumber}</RowLink>
                     </td>
                     <td className="p-4 text-sm">{lease.customer?.fullName ?? '-'}</td>
                     <td className="p-4 text-sm">{lease.unit?.unitNumber ?? '-'}</td>

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
-import { ORG_ROLES } from '@/config/roles';
-import { type CurrentUser, getCurrentUser, isPlatformAdmin } from '@/lib/auth';
+import { ORG_ROLES, PLATFORM_ROLES } from '@/config/roles';
+import { type CurrentUser, getCurrentUser } from '@/lib/auth';
 
 /**
  * Returns the current user, redirecting to the login page when anonymous.
@@ -23,7 +23,10 @@ export async function requireOrgUser(): Promise<CurrentUser> {
   const orgId = user.activeTenantId;
   if (!orgId) {
     // Platform operators hold no tenant membership; their home is /platform.
-    if (await isPlatformAdmin()) redirect('/platform');
+    const hasPlatformRole = Object.values(user.roles).some((roles) =>
+      roles.some((role) => (PLATFORM_ROLES as readonly string[]).includes(role)),
+    );
+    if (hasPlatformRole) redirect('/platform');
     return user;
   }
   const roles = user.roles[orgId] ?? [];
@@ -51,9 +54,9 @@ export async function requireTenantUser(): Promise<CurrentUser> {
  */
 export async function requirePlatformAdmin(): Promise<CurrentUser> {
   const user = await requireActiveSession();
-  const isPlatformAdmin = Object.values(user.roles).some((roles) =>
+  const hasPlatformRole = Object.values(user.roles).some((roles) =>
     roles.includes('PLATFORM_ADMIN'),
   );
-  if (!isPlatformAdmin) redirect('/dashboard');
+  if (!hasPlatformRole) redirect('/dashboard');
   return user;
 }

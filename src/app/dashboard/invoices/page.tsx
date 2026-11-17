@@ -1,8 +1,6 @@
-import Link from 'next/link';
-
 import { AppShell } from '@/components/app-shell/app-shell';
-import { createMetadata, fmtDate, TOUCH_TARGET_CLASS, usd } from '@/lib/format';
-import { cn } from '@/lib/utils';
+import { RowLink } from '@/components/ui/row-link';
+import { createMetadata, fmtDate, usd } from '@/lib/format';
 import { requireOrgUser } from '@/server/page-guards';
 import { services } from '@/server/services';
 
@@ -63,15 +61,9 @@ export default async function InvoicesPage() {
                 invoices.map((invoice) => (
                   <tr key={invoice.id} className="border-b">
                     <td className="p-4 text-sm font-medium">
-                      <Link
-                        href={`/dashboard/invoices/${invoice.id}`}
-                        className={cn(
-                          TOUCH_TARGET_CLASS,
-                          'inline-flex items-center text-primary underline-offset-4 hover:underline',
-                        )}
-                      >
+                      <RowLink href={`/dashboard/invoices/${invoice.id}`}>
                         {invoice.invoiceNumber}
-                      </Link>
+                      </RowLink>
                     </td>
                     <td className="p-4 text-sm">{invoice.customer?.fullName ?? '-'}</td>
                     <td className="p-4 text-sm">

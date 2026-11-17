@@ -1,8 +1,6 @@
-import Link from 'next/link';
-
 import { AppShell } from '@/components/app-shell/app-shell';
-import { createMetadata, fmtCount, TOUCH_TARGET_CLASS } from '@/lib/format';
-import { cn } from '@/lib/utils';
+import { RowLink } from '@/components/ui/row-link';
+import { createMetadata, fmtCount } from '@/lib/format';
 import { requireOrgUser } from '@/server/page-guards';
 import { services } from '@/server/services';
 
@@ -63,15 +61,7 @@ export default async function MetersPage() {
                 meters.map((meter) => (
                   <tr key={meter.id} className="border-b">
                     <td className="p-4 text-sm font-medium">
-                      <Link
-                        href={`/dashboard/meters/${meter.id}`}
-                        className={cn(
-                          TOUCH_TARGET_CLASS,
-                          'inline-flex items-center text-primary underline-offset-4 hover:underline',
-                        )}
-                      >
-                        {meter.serialNumber}
-                      </Link>
+                      <RowLink href={`/dashboard/meters/${meter.id}`}>{meter.serialNumber}</RowLink>
                     </td>
                     <td className="p-4 text-sm">{meter.meterType}</td>
                     <td className="p-4 text-sm">{meter.unitOfMeasurement}</td>

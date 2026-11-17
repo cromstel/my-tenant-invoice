@@ -1,8 +1,6 @@
-import Link from 'next/link';
-
 import { AppShell } from '@/components/app-shell/app-shell';
-import { createMetadata, fmtCount, fmtOccupancy, TOUCH_TARGET_CLASS } from '@/lib/format';
-import { cn } from '@/lib/utils';
+import { RowLink } from '@/components/ui/row-link';
+import { createMetadata, fmtCount, fmtOccupancy } from '@/lib/format';
 import { requireOrgUser } from '@/server/page-guards';
 import { services } from '@/server/services';
 
@@ -63,15 +61,9 @@ export default async function PropertiesPage() {
                 properties.map((property) => (
                   <tr key={property.id} className="border-b">
                     <td className="p-4 text-sm font-medium">
-                      <Link
-                        href={`/dashboard/properties/${property.id}`}
-                        className={cn(
-                          TOUCH_TARGET_CLASS,
-                          'inline-flex items-center text-primary underline-offset-4 hover:underline',
-                        )}
-                      >
+                      <RowLink href={`/dashboard/properties/${property.id}`}>
                         {property.name}
-                      </Link>
+                      </RowLink>
                     </td>
                     <td className="p-4 text-sm">{property.address}</td>
                     <td className="p-4 text-sm">{property.propertyType}</td>
