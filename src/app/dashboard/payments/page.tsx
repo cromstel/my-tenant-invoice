@@ -39,7 +39,7 @@ export default async function PaymentsPage() {
         </div>
 
         <div className="rounded-lg border">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" role="region" aria-label="Payments table" tabIndex={0}>
             <table className="w-full">
               <thead>
                 <tr className="border-b bg-muted/50">

@@ -40,7 +40,7 @@ export default async function InvoicesPage() {
         </div>
 
         <div className="rounded-lg border">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" role="region" aria-label="Invoices table" tabIndex={0}>
             <table className="w-full">
               <thead>
                 <tr className="border-b bg-muted/50">

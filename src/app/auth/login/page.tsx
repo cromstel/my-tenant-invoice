@@ -98,7 +98,7 @@ function LoginForm(): React.ReactNode {
                   <Label htmlFor="password">Password</Label>
                   <Link
                     href="/auth/forgot-password"
-                    className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+                    className="inline-flex min-h-11 items-center text-sm font-medium text-primary underline-offset-4 hover:underline"
                   >
                     Forgot password?
                   </Link>
@@ -131,7 +131,7 @@ function LoginForm(): React.ReactNode {
               Don&apos;t have an account?{' '}
               <Link
                 href="/auth/signup"
-                className="font-medium text-primary underline-offset-4 hover:underline"
+                className="inline-flex min-h-11 items-center font-medium text-primary underline-offset-4 hover:underline"
               >
                 Create one
               </Link>

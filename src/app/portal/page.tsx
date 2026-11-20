@@ -121,7 +121,12 @@ export default async function ClientPortalPage() {
           {invoices.length === 0 ? (
             <p className="text-sm text-muted-foreground">No invoices to display.</p>
           ) : (
-            <div className="overflow-x-auto">
+            <div
+              className="overflow-x-auto"
+              role="region"
+              aria-label="Recent invoices table"
+              tabIndex={0}
+            >
               <table className="w-full">
                 <thead>
                   <tr className="border-b bg-muted/50">
@@ -155,7 +160,12 @@ export default async function ClientPortalPage() {
           {payments.length === 0 ? (
             <p className="text-sm text-muted-foreground">No payments to display.</p>
           ) : (
-            <div className="overflow-x-auto">
+            <div
+              className="overflow-x-auto"
+              role="region"
+              aria-label="Recent payments table"
+              tabIndex={0}
+            >
               <table className="w-full">
                 <thead>
                   <tr className="border-b bg-muted/50">

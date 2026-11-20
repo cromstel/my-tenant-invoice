@@ -42,7 +42,7 @@ export function ContactForm() {
           type="text"
           required
           maxLength={200}
-          className="w-full rounded-md border px-3 py-2 text-sm"
+          className="min-h-11 w-full rounded-md border px-3 py-2 text-sm"
           placeholder="Your name"
         />
       </div>
@@ -56,7 +56,7 @@ export function ContactForm() {
           type="email"
           required
           maxLength={320}
-          className="w-full rounded-md border px-3 py-2 text-sm"
+          className="min-h-11 w-full rounded-md border px-3 py-2 text-sm"
           placeholder="you@example.com"
         />
       </div>
@@ -69,7 +69,7 @@ export function ContactForm() {
           type="text"
           tabIndex={-1}
           autoComplete="off"
-          className="w-full rounded-md border px-3 py-2 text-sm"
+          className="min-h-11 w-full rounded-md border px-3 py-2 text-sm"
         />
       </div>
       <div>
@@ -82,7 +82,7 @@ export function ContactForm() {
           rows={5}
           required
           maxLength={5000}
-          className="w-full rounded-md border px-3 py-2 text-sm"
+          className="min-h-11 w-full rounded-md border px-3 py-2 text-sm"
           placeholder="How can we help?"
         />
       </div>

@@ -42,7 +42,7 @@ export default async function LeasesPage() {
         </div>
 
         <div className="rounded-lg border">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" role="region" aria-label="Leases table" tabIndex={0}>
             <table className="w-full">
               <thead>
                 <tr className="border-b bg-muted/50">
