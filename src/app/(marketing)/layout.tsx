@@ -15,7 +15,13 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
           <div className="grid gap-8 md:grid-cols-4">
             <div>
               <h3 className="mb-2">
-                <Wordmark markClassName="size-6" nameClassName="text-base font-semibold" />
+                <Link
+                  href="/"
+                  aria-label="myTenant Invoice home"
+                  className="inline-flex min-h-11 items-center rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <Wordmark markClassName="size-6" nameClassName="text-base font-semibold" />
+                </Link>
               </h3>
               <p className="text-sm text-muted-foreground">
                 Production-grade SaaS multi-tenant invoicing and property billing management

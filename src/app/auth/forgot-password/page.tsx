@@ -6,6 +6,7 @@ import { Suspense, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { AuthLogo } from '@/components/brand/auth-logo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -44,7 +45,7 @@ function ForgotPasswordForm(): React.ReactNode {
         <Card>
           <CardHeader className="space-y-1">
             <div className="mb-5 flex justify-center">
-              <img src="/logo.svg" alt="myTenant Invoice" width={200} height={48} />
+              <AuthLogo />
             </div>
 
             <CardTitle asChild>

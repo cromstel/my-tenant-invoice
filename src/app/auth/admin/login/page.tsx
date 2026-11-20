@@ -6,6 +6,7 @@ import { Suspense, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { AuthLogo } from '@/components/brand/auth-logo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -64,13 +65,7 @@ function AdminLoginForm(): React.ReactNode {
         <Card className="border-slate-700 bg-slate-800/60 text-slate-100 shadow-2xl backdrop-blur-sm supports-[backdrop-filter]:bg-slate-800/40">
           <CardHeader className="space-y-1 border-b border-slate-700 pb-6">
             <div className="mb-3 flex items-center justify-center">
-              <img
-                src="/logo.svg"
-                alt="myTenant Invoice"
-                width={200}
-                height={48}
-                className="brightness-0 invert"
-              />
+              <AuthLogo imgClassName="brightness-0 invert" />
             </div>
             <CardTitle asChild>
               <h1 className="text-center text-2xl font-bold tracking-tight">
