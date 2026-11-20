@@ -40,44 +40,46 @@ export default async function InvoicesPage() {
         </div>
 
         <div className="rounded-lg border">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="p-4 text-left text-sm font-medium">Invoice #</th>
-                <th className="p-4 text-left text-sm font-medium">Customer</th>
-                <th className="p-4 text-left text-sm font-medium">Status</th>
-                <th className="p-4 text-left text-sm font-medium">Total</th>
-                <th className="p-4 text-left text-sm font-medium">Due Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoices.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="p-8 text-center text-muted-foreground">
-                    No invoices found.
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="p-4 text-left text-sm font-medium">Invoice #</th>
+                  <th className="p-4 text-left text-sm font-medium">Customer</th>
+                  <th className="p-4 text-left text-sm font-medium">Status</th>
+                  <th className="p-4 text-left text-sm font-medium">Total</th>
+                  <th className="p-4 text-left text-sm font-medium">Due Date</th>
                 </tr>
-              ) : (
-                invoices.map((invoice) => (
-                  <tr key={invoice.id} className="border-b">
-                    <td className="p-4 text-sm font-medium">
-                      <RowLink href={`/dashboard/invoices/${invoice.id}`}>
-                        {invoice.invoiceNumber}
-                      </RowLink>
+              </thead>
+              <tbody>
+                {invoices.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                      No invoices found.
                     </td>
-                    <td className="p-4 text-sm">{invoice.customer?.fullName ?? '-'}</td>
-                    <td className="p-4 text-sm">
-                      <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
-                        {invoice.status}
-                      </span>
-                    </td>
-                    <td className="p-4 text-sm">{usd(invoice.total)}</td>
-                    <td className="p-4 text-sm">{fmtDate(invoice.dueDate)}</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  invoices.map((invoice) => (
+                    <tr key={invoice.id} className="border-b">
+                      <td className="p-4 text-sm font-medium">
+                        <RowLink href={`/dashboard/invoices/${invoice.id}`}>
+                          {invoice.invoiceNumber}
+                        </RowLink>
+                      </td>
+                      <td className="p-4 text-sm">{invoice.customer?.fullName ?? '-'}</td>
+                      <td className="p-4 text-sm">
+                        <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
+                          {invoice.status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-sm">{usd(invoice.total)}</td>
+                      <td className="p-4 text-sm">{fmtDate(invoice.dueDate)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </AppShell>

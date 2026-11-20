@@ -40,40 +40,42 @@ export default async function PropertiesPage() {
         </div>
 
         <div className="rounded-lg border">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="p-4 text-left text-sm font-medium">Name</th>
-                <th className="p-4 text-left text-sm font-medium">Address</th>
-                <th className="p-4 text-left text-sm font-medium">Type</th>
-                <th className="p-4 text-left text-sm font-medium">Units</th>
-                <th className="p-4 text-left text-sm font-medium">Occupancy</th>
-              </tr>
-            </thead>
-            <tbody>
-              {properties.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="p-8 text-center text-muted-foreground">
-                    No properties found.
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="p-4 text-left text-sm font-medium">Name</th>
+                  <th className="p-4 text-left text-sm font-medium">Address</th>
+                  <th className="p-4 text-left text-sm font-medium">Type</th>
+                  <th className="p-4 text-left text-sm font-medium">Units</th>
+                  <th className="p-4 text-left text-sm font-medium">Occupancy</th>
                 </tr>
-              ) : (
-                properties.map((property) => (
-                  <tr key={property.id} className="border-b">
-                    <td className="p-4 text-sm font-medium">
-                      <RowLink href={`/dashboard/properties/${property.id}`}>
-                        {property.name}
-                      </RowLink>
+              </thead>
+              <tbody>
+                {properties.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                      No properties found.
                     </td>
-                    <td className="p-4 text-sm">{property.address}</td>
-                    <td className="p-4 text-sm">{property.propertyType}</td>
-                    <td className="p-4 text-sm">{fmtCount(property.unitCount)}</td>
-                    <td className="p-4 text-sm">{fmtOccupancy(property.occupancyRate)}</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  properties.map((property) => (
+                    <tr key={property.id} className="border-b">
+                      <td className="p-4 text-sm font-medium">
+                        <RowLink href={`/dashboard/properties/${property.id}`}>
+                          {property.name}
+                        </RowLink>
+                      </td>
+                      <td className="p-4 text-sm">{property.address}</td>
+                      <td className="p-4 text-sm">{property.propertyType}</td>
+                      <td className="p-4 text-sm">{fmtCount(property.unitCount)}</td>
+                      <td className="p-4 text-sm">{fmtOccupancy(property.occupancyRate)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </AppShell>

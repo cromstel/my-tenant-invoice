@@ -30,6 +30,15 @@ interface PortalPayment {
   paymentDate: Date;
 }
 
+/** Turn enum values such as BANK_TRANSFER into readable labels. */
+function humanizeEnum(value: string): string {
+  return value
+    .toLowerCase()
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export default async function ClientPortalPage() {
   const user = await requireTenantUser();
   const orgId = user.activeTenantId;
@@ -112,30 +121,32 @@ export default async function ClientPortalPage() {
           {invoices.length === 0 ? (
             <p className="text-sm text-muted-foreground">No invoices to display.</p>
           ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-muted/50">
-                  <th className="p-3 text-left text-sm font-medium">Invoice #</th>
-                  <th className="p-3 text-left text-sm font-medium">Amount</th>
-                  <th className="p-3 text-left text-sm font-medium">Status</th>
-                  <th className="p-3 text-left text-sm font-medium">Due Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoices.map((invoice) => (
-                  <tr key={invoice.id} className="border-b">
-                    <td className="p-3 text-sm font-medium">{invoice.invoiceNumber}</td>
-                    <td className="p-3 text-sm">{usd(invoice.total)}</td>
-                    <td className="p-3 text-sm">
-                      <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
-                        {invoice.status}
-                      </span>
-                    </td>
-                    <td className="p-3 text-sm">{fmtDate(invoice.dueDate)}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b bg-muted/50">
+                    <th className="p-3 text-left text-sm font-medium">Invoice #</th>
+                    <th className="p-3 text-left text-sm font-medium">Amount</th>
+                    <th className="p-3 text-left text-sm font-medium">Status</th>
+                    <th className="p-3 text-left text-sm font-medium">Due Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {invoices.map((invoice) => (
+                    <tr key={invoice.id} className="border-b">
+                      <td className="p-3 text-sm font-medium">{invoice.invoiceNumber}</td>
+                      <td className="p-3 text-sm">{usd(invoice.total)}</td>
+                      <td className="p-3 text-sm">
+                        <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
+                          {humanizeEnum(invoice.status)}
+                        </span>
+                      </td>
+                      <td className="p-3 text-sm">{fmtDate(invoice.dueDate)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 
@@ -144,26 +155,30 @@ export default async function ClientPortalPage() {
           {payments.length === 0 ? (
             <p className="text-sm text-muted-foreground">No payments to display.</p>
           ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-muted/50">
-                  <th className="p-3 text-left text-sm font-medium">Amount</th>
-                  <th className="p-3 text-left text-sm font-medium">Method</th>
-                  <th className="p-3 text-left text-sm font-medium">Status</th>
-                  <th className="p-3 text-left text-sm font-medium">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {payments.map((payment) => (
-                  <tr key={payment.id} className="border-b">
-                    <td className="p-3 text-sm font-medium">{usd(payment.amount)}</td>
-                    <td className="p-3 text-sm">{payment.paymentMethod ?? '-'}</td>
-                    <td className="p-3 text-sm">{payment.status}</td>
-                    <td className="p-3 text-sm">{fmtDate(payment.paymentDate)}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b bg-muted/50">
+                    <th className="p-3 text-left text-sm font-medium">Amount</th>
+                    <th className="p-3 text-left text-sm font-medium">Method</th>
+                    <th className="p-3 text-left text-sm font-medium">Status</th>
+                    <th className="p-3 text-left text-sm font-medium">Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {payments.map((payment) => (
+                    <tr key={payment.id} className="border-b">
+                      <td className="p-3 text-sm font-medium">{usd(payment.amount)}</td>
+                      <td className="p-3 text-sm">
+                        {payment.paymentMethod ? humanizeEnum(payment.paymentMethod) : '-'}
+                      </td>
+                      <td className="p-3 text-sm">{humanizeEnum(payment.status)}</td>
+                      <td className="p-3 text-sm">{fmtDate(payment.paymentDate)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>

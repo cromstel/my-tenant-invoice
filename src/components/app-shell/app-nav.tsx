@@ -32,7 +32,7 @@ export function AppNav({ items }: { items: NavItem[] }) {
               href={item.href}
               aria-current={active ? 'page' : undefined}
               className={cn(
-                'inline-flex items-center border-b-2 px-3 text-sm font-medium whitespace-nowrap transition-colors',
+                'inline-flex shrink-0 items-center border-b-2 px-3 text-sm font-medium whitespace-nowrap transition-colors',
                 TOUCH_TARGET_CLASS,
                 active
                   ? 'border-primary text-foreground'

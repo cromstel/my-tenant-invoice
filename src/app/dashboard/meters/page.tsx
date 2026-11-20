@@ -40,42 +40,46 @@ export default async function MetersPage() {
         </div>
 
         <div className="rounded-lg border">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="p-4 text-left text-sm font-medium">Serial Number</th>
-                <th className="p-4 text-left text-sm font-medium">Type</th>
-                <th className="p-4 text-left text-sm font-medium">Unit</th>
-                <th className="p-4 text-left text-sm font-medium">Latest Reading</th>
-                <th className="p-4 text-left text-sm font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {meters.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="p-8 text-center text-muted-foreground">
-                    No meters found.
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="p-4 text-left text-sm font-medium">Serial Number</th>
+                  <th className="p-4 text-left text-sm font-medium">Type</th>
+                  <th className="p-4 text-left text-sm font-medium">Unit</th>
+                  <th className="p-4 text-left text-sm font-medium">Latest Reading</th>
+                  <th className="p-4 text-left text-sm font-medium">Status</th>
                 </tr>
-              ) : (
-                meters.map((meter) => (
-                  <tr key={meter.id} className="border-b">
-                    <td className="p-4 text-sm font-medium">
-                      <RowLink href={`/dashboard/meters/${meter.id}`}>{meter.serialNumber}</RowLink>
-                    </td>
-                    <td className="p-4 text-sm">{meter.meterType}</td>
-                    <td className="p-4 text-sm">{meter.unitOfMeasurement}</td>
-                    <td className="p-4 text-sm">{fmtCount(meter.latestReading)}</td>
-                    <td className="p-4 text-sm">
-                      <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
-                        {meter.status}
-                      </span>
+              </thead>
+              <tbody>
+                {meters.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                      No meters found.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  meters.map((meter) => (
+                    <tr key={meter.id} className="border-b">
+                      <td className="p-4 text-sm font-medium">
+                        <RowLink href={`/dashboard/meters/${meter.id}`}>
+                          {meter.serialNumber}
+                        </RowLink>
+                      </td>
+                      <td className="p-4 text-sm">{meter.meterType}</td>
+                      <td className="p-4 text-sm">{meter.unitOfMeasurement}</td>
+                      <td className="p-4 text-sm">{fmtCount(meter.latestReading)}</td>
+                      <td className="p-4 text-sm">
+                        <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
+                          {meter.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </AppShell>

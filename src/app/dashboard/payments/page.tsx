@@ -39,40 +39,44 @@ export default async function PaymentsPage() {
         </div>
 
         <div className="rounded-lg border">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="p-4 text-left text-sm font-medium">Customer</th>
-                <th className="p-4 text-left text-sm font-medium">Amount</th>
-                <th className="p-4 text-left text-sm font-medium">Method</th>
-                <th className="p-4 text-left text-sm font-medium">Status</th>
-                <th className="p-4 text-left text-sm font-medium">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {payments.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="p-8 text-center text-muted-foreground">
-                    No payments found.
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="p-4 text-left text-sm font-medium">Customer</th>
+                  <th className="p-4 text-left text-sm font-medium">Amount</th>
+                  <th className="p-4 text-left text-sm font-medium">Method</th>
+                  <th className="p-4 text-left text-sm font-medium">Status</th>
+                  <th className="p-4 text-left text-sm font-medium">Date</th>
                 </tr>
-              ) : (
-                payments.map((payment) => (
-                  <tr key={payment.id} className="border-b">
-                    <td className="p-4 text-sm font-medium">{payment.customer?.fullName ?? '-'}</td>
-                    <td className="p-4 text-sm">{usd(payment.amount)}</td>
-                    <td className="p-4 text-sm">{payment.paymentMethod ?? '-'}</td>
-                    <td className="p-4 text-sm">
-                      <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
-                        {payment.status}
-                      </span>
+              </thead>
+              <tbody>
+                {payments.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                      No payments found.
                     </td>
-                    <td className="p-4 text-sm">{fmtDate(payment.paymentDate)}</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  payments.map((payment) => (
+                    <tr key={payment.id} className="border-b">
+                      <td className="p-4 text-sm font-medium">
+                        {payment.customer?.fullName ?? '-'}
+                      </td>
+                      <td className="p-4 text-sm">{usd(payment.amount)}</td>
+                      <td className="p-4 text-sm">{payment.paymentMethod ?? '-'}</td>
+                      <td className="p-4 text-sm">
+                        <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
+                          {payment.status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-sm">{fmtDate(payment.paymentDate)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </AppShell>

@@ -42,44 +42,48 @@ export default async function LeasesPage() {
         </div>
 
         <div className="rounded-lg border">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="p-4 text-left text-sm font-medium">Lease #</th>
-                <th className="p-4 text-left text-sm font-medium">Customer</th>
-                <th className="p-4 text-left text-sm font-medium">Unit</th>
-                <th className="p-4 text-left text-sm font-medium">Status</th>
-                <th className="p-4 text-left text-sm font-medium">Start Date</th>
-                <th className="p-4 text-left text-sm font-medium">Recurring Charge</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leases.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="p-8 text-center text-muted-foreground">
-                    No leases found.
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="p-4 text-left text-sm font-medium">Lease #</th>
+                  <th className="p-4 text-left text-sm font-medium">Customer</th>
+                  <th className="p-4 text-left text-sm font-medium">Unit</th>
+                  <th className="p-4 text-left text-sm font-medium">Status</th>
+                  <th className="p-4 text-left text-sm font-medium">Start Date</th>
+                  <th className="p-4 text-left text-sm font-medium">Recurring Charge</th>
                 </tr>
-              ) : (
-                leases.map((lease) => (
-                  <tr key={lease.id} className="border-b">
-                    <td className="p-4 text-sm font-medium">
-                      <RowLink href={`/dashboard/leases/${lease.id}`}>{lease.leaseNumber}</RowLink>
+              </thead>
+              <tbody>
+                {leases.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="p-8 text-center text-muted-foreground">
+                      No leases found.
                     </td>
-                    <td className="p-4 text-sm">{lease.customer?.fullName ?? '-'}</td>
-                    <td className="p-4 text-sm">{lease.unit?.unitNumber ?? '-'}</td>
-                    <td className="p-4 text-sm">
-                      <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
-                        {lease.status}
-                      </span>
-                    </td>
-                    <td className="p-4 text-sm">{fmtDate(lease.startDate)}</td>
-                    <td className="p-4 text-sm">{usd(lease.recurringCharge)}</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  leases.map((lease) => (
+                    <tr key={lease.id} className="border-b">
+                      <td className="p-4 text-sm font-medium">
+                        <RowLink href={`/dashboard/leases/${lease.id}`}>
+                          {lease.leaseNumber}
+                        </RowLink>
+                      </td>
+                      <td className="p-4 text-sm">{lease.customer?.fullName ?? '-'}</td>
+                      <td className="p-4 text-sm">{lease.unit?.unitNumber ?? '-'}</td>
+                      <td className="p-4 text-sm">
+                        <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium">
+                          {lease.status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-sm">{fmtDate(lease.startDate)}</td>
+                      <td className="p-4 text-sm">{usd(lease.recurringCharge)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </AppShell>
