@@ -35,7 +35,7 @@ export function SiteHeader(): React.JSX.Element {
   }, []);
 
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* wordmark */}
         <Link href="/" className={`inline-flex min-h-11 items-center rounded-md ${focusRing}`}>
