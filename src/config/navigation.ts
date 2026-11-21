@@ -4,7 +4,7 @@ export interface NavigationLink {
 }
 
 export const navigationLinks: readonly NavigationLink[] = [
-  { href: '/features', label: 'Features' },
+  { href: '/#features', label: 'Features' },
   { href: '/solutions', label: 'Solutions' },
   { href: '/services', label: 'Services' },
   { href: '/pricing', label: 'Pricing' },

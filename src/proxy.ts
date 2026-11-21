@@ -5,7 +5,6 @@ import { ACTIVE_TENANT_COOKIE, loadAuthContext } from '@/server/auth-context';
 
 const PUBLIC_ROUTES: readonly string[] = [
   '/',
-  '/features',
   '/services',
   '/pricing',
   '/solutions',
@@ -66,6 +65,12 @@ function isApiRoute(pathname: string): boolean {
 
 export default async function proxy(request: NextRequest): Promise<NextResponse> {
   const path = request.nextUrl.pathname;
+
+  // /features was folded into the landing page's Key Features section. Keep
+  // old links and bookmarks working with a permanent redirect to that anchor.
+  if (path === '/features' || path === '/features/') {
+    return NextResponse.redirect(new URL('/#features', request.url), 308);
+  }
 
   if (isPublicRoute(path)) {
     const response = NextResponse.next();

@@ -4,9 +4,9 @@ export interface Feature {
 }
 
 /**
- * Canonical feature set shared by the landing page's Key Features section and
- * the /features page. Copy is limited to shipped capabilities — see the
- * claims policy in src/config/services.ts.
+ * Feature set rendered by the landing page's Key Features section. Copy is
+ * limited to shipped capabilities — see the claims policy in
+ * src/config/services.ts.
  */
 export const features: readonly Feature[] = [
   {

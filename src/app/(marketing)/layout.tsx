@@ -33,7 +33,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               <ul className="space-y-1 text-sm">
                 <li>
                   <Link
-                    href="/features"
+                    href="/#features"
                     className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
                   >
                     Features

@@ -22,7 +22,6 @@ const PAGES = [
   'page.tsx',
   'about/page.tsx',
   'services/page.tsx',
-  'features/page.tsx',
   'solutions/page.tsx',
   'pricing/page.tsx',
   'security/page.tsx',

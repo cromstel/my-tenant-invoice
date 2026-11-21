@@ -16,9 +16,7 @@ test.describe('Billing Flow', () => {
   test('should display marketing pages', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('h1')).toBeVisible();
-
-    await page.goto('/features');
-    await expect(page.locator('h1')).toContainText('Features');
+    await expect(page.getByRole('heading', { name: 'Key Features' })).toBeVisible();
 
     await page.goto('/pricing');
     await expect(page.locator('h1')).toContainText('Pricing');

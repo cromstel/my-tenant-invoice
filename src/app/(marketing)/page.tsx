@@ -45,7 +45,7 @@ export default async function MarketingHomePage(): Promise<React.ReactNode> {
             Get Started Free
           </Link>
           <Link
-            href="/features"
+            href="/#features"
             className="inline-flex items-center justify-center rounded-md border px-8 py-3 text-sm font-medium shadow hover:bg-accent"
           >
             Explore Features
@@ -54,7 +54,7 @@ export default async function MarketingHomePage(): Promise<React.ReactNode> {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-16">
+      <section id="features" className="container mx-auto px-4 py-16">
         <h2 className="mb-12 text-center text-3xl font-bold">Key Features</h2>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (

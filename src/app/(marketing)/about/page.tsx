@@ -42,7 +42,7 @@ export default function AboutPage(): React.JSX.Element {
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
-                <Link href="/features">Explore the platform</Link>
+                <Link href="/#features">Explore the platform</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link href="/contact">Talk to us</Link>

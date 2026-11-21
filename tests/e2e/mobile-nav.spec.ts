@@ -106,9 +106,9 @@ test.describe('marketing header on a phone', () => {
     const drawer = page.getByRole('dialog');
     await expect(drawer).toBeVisible();
 
-    await drawer.getByRole('link', { name: 'Features' }).click();
+    await drawer.getByRole('link', { name: 'Services' }).click();
 
-    await expect(page).toHaveURL(/\/features$/);
+    await expect(page).toHaveURL(/\/services$/);
   });
 });
 
