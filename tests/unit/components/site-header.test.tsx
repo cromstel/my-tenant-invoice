@@ -61,7 +61,6 @@ describe('SiteHeader', () => {
 
     // Assert
     expect(within(dialog).getByRole('navigation', { name: 'Mobile main' })).toBeInTheDocument();
-    expect(within(dialog).getByRole('link', { name: 'Features' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Pricing' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Security' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'About' })).toBeInTheDocument();
@@ -69,6 +68,7 @@ describe('SiteHeader', () => {
     expect(within(dialog).getByRole('link', { name: 'Contact' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Log in' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Get Started' })).toBeInTheDocument();
+    expect(within(dialog).queryByRole('link', { name: 'Features' })).not.toBeInTheDocument();
   });
 
   it('names the drawer with the product wordmark', async () => {
@@ -140,7 +140,7 @@ describe('SiteHeader', () => {
     const dialog = screen.getByRole('dialog');
 
     // Act
-    await user.click(within(dialog).getByRole('link', { name: 'Features' }));
+    await user.click(within(dialog).getByRole('link', { name: 'Pricing' }));
 
     // Assert
     await waitFor(() => {

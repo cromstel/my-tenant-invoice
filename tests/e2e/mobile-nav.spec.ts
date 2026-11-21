@@ -6,7 +6,6 @@ const DESKTOP = { width: 1024, height: 800 };
 const OVERFLOW_WIDTHS = [320, 375, 768, 1024, 1440] as const;
 
 const DRAWER_LINK_LABELS = [
-  'Features',
   'Solutions',
   'Services',
   'Pricing',
