@@ -12,6 +12,7 @@ const DRAWER_LINK_LABELS = [
   'Pricing',
   'Security',
   'About',
+  'Blog',
   'Contact',
   'Log in',
   'Get Started',

@@ -65,6 +65,7 @@ describe('SiteHeader', () => {
     expect(within(dialog).getByRole('link', { name: 'Pricing' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Security' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'About' })).toBeInTheDocument();
+    expect(within(dialog).getByRole('link', { name: 'Blog' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Contact' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Log in' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: 'Get Started' })).toBeInTheDocument();
