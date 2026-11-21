@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { features } from '@/config/features';
 import { getCurrentUser } from '@/lib/auth';
 
 export const metadata: Metadata = {
@@ -56,33 +57,7 @@ export default async function MarketingHomePage(): Promise<React.ReactNode> {
       <section className="container mx-auto px-4 py-16">
         <h2 className="mb-12 text-center text-3xl font-bold">Key Features</h2>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              title: 'Multi-Tenancy',
-              desc: 'Complete data isolation for each organization with independent configurations.',
-            },
-            {
-              title: 'Smart Billing',
-              desc: 'Flexible tariff engine with flat, tiered, and block rates.',
-            },
-            {
-              title: 'Property Management',
-              desc: 'Manage properties, buildings, units, and occupancy tracking.',
-            },
-            {
-              title: 'Meter Management',
-              desc: 'Track utility meters, readings, and consumption with anomaly detection.',
-            },
-            {
-              title: 'Payment Processing',
-              desc: 'Record payments, allocations, refunds, and reconciliation.',
-            },
-            {
-              title: 'Financial Reports',
-              desc: 'Revenue, aging, consumption, and occupancy reports.',
-            },
-            { title: 'Audit Logging', desc: 'Comprehensive audit trail for all critical actions.' },
-          ].map((feature) => (
+          {features.map((feature) => (
             <div key={feature.title} className="rounded-lg border bg-card p-6 shadow-sm">
               <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">{feature.desc}</p>

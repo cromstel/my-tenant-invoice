@@ -15,6 +15,9 @@ import { describe, expect, it } from 'vitest';
 
 const MARKETING_DIR = path.join(process.cwd(), 'src', 'app', '(marketing)');
 
+/** Shared marketing copy that is imported into one or more marketing pages. */
+const SHARED_COPY = [path.join(process.cwd(), 'src', 'config', 'features.ts')];
+
 const PAGES = [
   'page.tsx',
   'about/page.tsx',
@@ -67,20 +70,26 @@ function assertNoBannedPhrase(page: string, pagePath: string, banned: string[]):
 }
 
 describe('marketing claims guard', () => {
-  for (const pagePath of PAGES) {
-    describe(pagePath, () => {
-      const page = readPage(pagePath);
+  const sources = [
+    ...PAGES.map((pagePath) => ({ label: pagePath, text: readPage(pagePath) })),
+    ...SHARED_COPY.map((filePath) => ({
+      label: path.relative(process.cwd(), filePath),
+      text: readFileSync(filePath, 'utf8').toLowerCase(),
+    })),
+  ];
 
+  for (const { label, text } of sources) {
+    describe(label, () => {
       it('publishes no certification claims', () => {
-        assertNoBannedPhrase(page, pagePath, BANNED_CERTIFICATIONS);
+        assertNoBannedPhrase(text, label, BANNED_CERTIFICATIONS);
       });
 
       it('publishes no claims for unshipped features', () => {
-        assertNoBannedPhrase(page, pagePath, BANNED_UNSHIPPED_FEATURES);
+        assertNoBannedPhrase(text, label, BANNED_UNSHIPPED_FEATURES);
       });
 
       it('publishes no unverifiable commitments', () => {
-        assertNoBannedPhrase(page, pagePath, BANNED_UNVERIFIED_COMMITMENTS);
+        assertNoBannedPhrase(text, label, BANNED_UNVERIFIED_COMMITMENTS);
       });
     });
   }
