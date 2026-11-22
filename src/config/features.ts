@@ -22,6 +22,10 @@ export const features: readonly Feature[] = [
     desc: 'Manage properties, buildings, units, and occupancy tracking with flexible hierarchy.',
   },
   {
+    title: 'Lease Management',
+    desc: 'Track leases, deposits and recurring charges; occupancy updates automatically at lease start and end, with day-based proration.',
+  },
+  {
     title: 'Meter Management',
     desc: 'Track utility meters, readings, and consumption with automated anomaly detection.',
   },
@@ -48,5 +52,9 @@ export const features: readonly Feature[] = [
   {
     title: 'Notifications',
     desc: 'Email, in-app, and webhook notifications for billing events.',
+  },
+  {
+    title: 'API & Automation',
+    desc: 'Permission-checked REST endpoints, background queues across the billing cycle, and HMAC-signed outbound webhooks.',
   },
 ];
